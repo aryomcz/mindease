@@ -8,7 +8,7 @@ import WelcomeModal from "@/components/WelcomeModal";
 import { UserProvider } from "@/context/UserContext";
 
 export const metadata = {
-  title: "MindEase",
+  title: "LuMind",
   description: "Your Mental Wellness Companion",
 };
 

@@ -93,7 +93,7 @@ export default function ArticleDetail({ params }) {
                             ME
                         </div>
                         <div>
-                            <p className="font-bold text-gray-800">MindEase Team</p>
+                            <p className="font-bold text-gray-800">LuMind Team</p>
                             <p className="text-xs text-gray-500">Mental Health Specialist</p>
                         </div>
                     </div>

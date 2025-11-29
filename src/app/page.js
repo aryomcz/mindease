@@ -70,7 +70,7 @@ export default function Home() {
             </h1>
 
             <p className="text-xl text-gray-600 leading-relaxed max-w-lg mx-auto lg:mx-0">
-              MindEase adalah ruang digital untuk merawat pikiranmu. Lacak emosi, atur napas, dan temukan ketenangan.
+              LuMind adalah ruang digital untuk merawat pikiranmu. Lacak emosi, atur napas, dan temukan ketenangan.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-6">
@@ -179,29 +179,29 @@ export default function Home() {
                   Bangun kebiasaan baik setiap hari. Selesaikan target kecilmu untuk melihat teman virtualmu bahagia!
                 </p>
                 <div className="relative inline-block group rounded-lg p-[2px]">
-  {/* Gradient Border (Hanya Saat Hover) */}
-  <div
-    className="
+                  {/* Gradient Border (Hanya Saat Hover) */}
+                  <div
+                    className="
       absolute inset-0 rounded-lg 
       bg-gradient-to-r from-teal-400 to-indigo-500
       opacity-0 group-hover:opacity-100
       transition-opacity duration-300
     "
-  ></div>
+                  ></div>
 
-  {/* Content */}
-  <div
-    className="
+                  {/* Content */}
+                  <div
+                    className="
       relative z-10
       inline-flex gap-2
       bg-white/20 backdrop-blur
       px-4 py-2 rounded-lg text-sm font-bold
       border border-white/20
     "
-  >
-    🐣 Live Tracker
-  </div>
-</div>
+                  >
+                    🐣 Live Tracker
+                  </div>
+                </div>
 
               </div>
               <div className="flex justify-center">

@@ -32,7 +32,7 @@ export default function LoadingScreen() {
       </div>
 
       <h1 className="mt-8 text-2xl font-black text-gray-700 tracking-widest uppercase animate-pulse">
-        MindEase
+        LuMind
       </h1>
       <p className="text-gray-400 text-sm mt-2 font-medium">Breathe In. Breathe Out.</p>
     </div>

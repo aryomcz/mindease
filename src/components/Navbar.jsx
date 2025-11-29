@@ -37,7 +37,7 @@ export default function Navbar() {
           {/* PERBAIKAN DI SINI: Saya hapus 'hidden sm:block' */}
           {/* Saya ubah ukurannya: 'text-xl' di HP, 'text-2xl' di Laptop */}
           <span className="text-xl md:text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-indigo-600 tracking-tight block">
-            MindEase
+            LuMind
           </span>
         </Link>
 

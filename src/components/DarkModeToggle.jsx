@@ -5,7 +5,7 @@ export default function DarkModeToggle() {
   const [mode, setMode] = useState("light");
 
   useEffect(() => {
-    const saved = localStorage.getItem("mindease-color-scheme");
+    const saved = localStorage.getItem("lumind-color-scheme");
     if (saved) {
       setMode(saved);
       if (saved === "dark") document.documentElement.classList.add("dark");
@@ -15,7 +15,7 @@ export default function DarkModeToggle() {
   const toggle = () => {
     const next = mode === "dark" ? "light" : "dark";
     setMode(next);
-    localStorage.setItem("mindease-color-scheme", next);
+    localStorage.setItem("lumind-color-scheme", next);
 
     if (next === "dark") document.documentElement.classList.add("dark");
     else document.documentElement.classList.remove("dark");
