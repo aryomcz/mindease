@@ -1,230 +1,221 @@
 "use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { 
-  Smile, Meh, Frown, Zap, AlertCircle, 
-  Save, CheckCircle2, History, ArrowRight, X 
-} from "lucide-react";
+import { ArrowLeft, Calendar, TrendingUp, PieChart as PieIcon, Trash2, Activity } from "lucide-react";
+import PieChart from "@/components/PieChart";
 
-export default function MoodPage() {
-  const router = useRouter();
-  const [selectedMood, setSelectedMood] = useState(null);
-  const [note, setNote] = useState("");
-  
-  // State untuk alur penyimpanan
-  const [step, setStep] = useState("input"); // 'input', 'saving', 'recommendation'
+const moodColors = {
+  Happy: "#4ade80",    
+  Neutral: "#facc15",  
+  Sad: "#60a5fa",      
+  Stressed: "#c084fc", 
+  Angry: "#f43f5e"     
+};
 
-  // Data Mood
-  const moods = [
-    { id: "happy", label: "Happy", icon: <Smile size={42} />, color: "text-green-500", bg: "bg-green-100" },
-    { id: "neutral", label: "Neutral", icon: <Meh size={42} />, color: "text-yellow-500", bg: "bg-yellow-100" },
-    { id: "sad", label: "Sad", icon: <Frown size={42} />, color: "text-blue-500", bg: "bg-blue-100" },
-    { id: "stressed", label: "Stressed", icon: <Zap size={42} />, color: "text-purple-500", bg: "bg-purple-100" },
-    { id: "angry", label: "Angry", icon: <AlertCircle size={42} />, color: "text-rose-500", bg: "bg-rose-100" },
-  ];
+export default function MoodAnalytics() {
+  const [moods, setMoods] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // LOGIKA REKOMENDASI PINTAR
-  const getRecommendation = (moodLabel) => {
-    switch (moodLabel) {
-      case "Stressed":
-      case "Angry":
-        return {
-          text: "Pikiranmu sedang panas.",
-          action: "Dinginkan dengan Latihan Napas.",
-          link: "/breathing",
-          btnColor: "bg-teal-600 hover:bg-teal-700"
-        };
-      case "Sad":
-        return {
-          text: "Tidak apa-apa merasa sedih.",
-          action: "Coba Grounding agar lebih tenang.",
-          link: "/toolbox", // User bisa pilih Grounding di sana
-          btnColor: "bg-indigo-600 hover:bg-indigo-700"
-        };
-      case "Happy":
-        return {
-          text: "Energi kamu positif banget!",
-          action: "Rayakan dengan main Pop-It sebentar?",
-          link: "/toolbox", // User bisa pilih Pop-It di sana
-          btnColor: "bg-orange-500 hover:bg-orange-600"
-        };
-      default: // Neutral
-        return {
-          text: "Hari yang tenang.",
-          action: "Cek tips kesehatan mental terbaru?",
-          link: "/articles",
-          btnColor: "bg-blue-600 hover:bg-blue-700"
-        };
+  useEffect(() => {
+    // Ambil data hanya di client side
+    if (typeof window !== "undefined") {
+        const saved = JSON.parse(localStorage.getItem("moods") || "[]");
+        setMoods(saved); 
+        setLoading(false);
+    }
+  }, []);
+
+  const clearHistory = () => {
+    if (confirm("Yakin ingin menghapus semua riwayat mood?")) {
+      localStorage.removeItem("moods");
+      setMoods([]);
     }
   };
 
-  const handleSave = () => {
-    if (!selectedMood) return;
+  const counts = { Happy: 0, Neutral: 0, Sad: 0, Stressed: 0, Angry: 0 };
+  moods.forEach((m) => {
+    if (counts[m.mood] !== undefined) counts[m.mood]++;
+  });
 
-    const newEntry = {
-      mood: selectedMood.label,
-      note: note,
-      date: new Date().toISOString(),
-      color: selectedMood.color
-    };
+  const chartData = [
+    { label: "Happy", value: counts.Happy, color: moodColors.Happy },
+    { label: "Neutral", value: counts.Neutral, color: moodColors.Neutral },
+    { label: "Sad", value: counts.Sad, color: moodColors.Sad },
+    { label: "Stressed", value: counts.Stressed, color: moodColors.Stressed },
+    { label: "Angry", value: counts.Angry, color: moodColors.Angry },
+  ];
 
-    const existingData = JSON.parse(localStorage.getItem("moods") || "[]");
-    localStorage.setItem("moods", JSON.stringify([...existingData, newEntry]));
+  const recentMoods = moods.slice(-7); 
 
-    // 1. Tampilkan Animasi Centang
-    setStep("saving");
-    
-    // 2. Setelah 1.5 detik, Tampilkan Rekomendasi (Bukan langsung redirect)
-    setTimeout(() => {
-      setStep("recommendation");
-    }, 1500);
-  };
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-500"></div>
+    </div>
+  );
 
-  // --- TAMPILAN 2: SAVING SUCCESS (Feedback Visual) ---
-  if (step === "saving") {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-50 to-teal-50 animate-gradient">
-        <div className="glass-panel p-10 rounded-[3rem] text-center animate-bounce-slow transform scale-110">
-          <div className="mx-auto bg-green-100 w-24 h-24 rounded-full flex items-center justify-center text-green-600 mb-6 shadow-lg shadow-green-200">
-            <CheckCircle2 size={56} />
-          </div>
-          <h2 className="text-4xl font-black text-gray-800 mb-2">Saved!</h2>
-          <p className="text-gray-500">Data mood kamu berhasil disimpan.</p>
-        </div>
-      </div>
-    );
-  }
-
-  // --- TAMPILAN 3: RECOMMENDATION MODAL (Fitur Baru!) ---
-  if (step === "recommendation") {
-    const rec = getRecommendation(selectedMood.label);
-    
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-50 to-teal-50 animate-gradient p-6">
-        
-        <div className="glass-panel p-8 md:p-12 rounded-[3rem] max-w-lg w-full text-center shadow-2xl border-2 border-white/60 animate-fade-in-up">
-           
-           <h3 className="text-2xl font-bold text-gray-800 mb-2">{rec.text}</h3>
-           <h1 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-indigo-600 mb-8 leading-tight">
-             {rec.action}
-           </h1>
-
-           <div className="space-y-4">
-              {/* Tombol Utama (Ikuti Saran) */}
-              <Link 
-                href={rec.link}
-                className={`w-full py-4 text-white rounded-2xl font-bold text-lg shadow-xl shadow-gray-200 transition-all transform hover:scale-105 flex items-center justify-center gap-2 ${rec.btnColor}`}
-              >
-                Mulai Sekarang <ArrowRight size={20}/>
-              </Link>
-
-              {/* Tombol Sekunder (Lihat History) */}
-              <button 
-                onClick={() => router.push("/mood/analytics")}
-                className="w-full py-4 bg-white/50 hover:bg-white text-gray-600 rounded-2xl font-bold border border-white/60 transition-all"
-              >
-                Tidak, lihat riwayat saja
-              </button>
-           </div>
-
-        </div>
-      </div>
-    );
-  }
-
-  // --- TAMPILAN 1: INPUT MOOD (Default) ---
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-teal-50 animate-gradient relative overflow-hidden">
-      
-      {/* Background Blobs */}
-      <div className="absolute top-0 -left-20 w-96 h-96 bg-teal-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob pointer-events-none"></div>
-      <div className="absolute bottom-0 -right-20 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000 pointer-events-none"></div>
+    // PERBAIKAN: Hapus bg-gradient, ganti min-h-screen transparan
+    <div className="w-full relative overflow-hidden min-h-screen text-gray-800">
 
-      <div className="max-w-4xl mx-auto px-6 pt-36 pb-32 relative z-10">
-        
-        {/* Header */}
-        <div className="text-center mb-12 space-y-4 animate-fade-in-up">
-          <div className="inline-block px-5 py-2 rounded-full bg-white/60 backdrop-blur-sm border border-white/50 text-sm font-bold text-indigo-600 shadow-sm">
-            ✨ Daily Check-in
+      {/* Background Ornaments (Hanya hiasan di mode default) */}
+      <div className="fixed top-20 left-0 w-72 h-72 bg-teal-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob pointer-events-none"></div>
+      <div className="fixed bottom-20 right-0 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000 pointer-events-none"></div>
+
+      <div className="max-w-6xl mx-auto px-6 pt-32 pb-32 relative z-10">
+
+        {/* HEADER */}
+        <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4 animate-fade-in-down">
+          <div>
+            <Link href="/mood" className="inline-flex items-center text-sm font-bold text-gray-500 hover:text-teal-600 mb-2 transition-colors">
+              <ArrowLeft size={18} className="mr-1" /> Back to Input
+            </Link>
+            <h1 className="text-4xl md:text-5xl font-black text-gray-800 tracking-tight text-glow">
+              Emotional Data
+            </h1>
+            <p className="text-gray-600 mt-2 font-medium">
+              Peta perasaanmu dalam angka dan visual.
+            </p>
           </div>
-          <h1 className="text-5xl md:text-6xl font-black text-gray-800 tracking-tight leading-tight text-glow">
-            How are you <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-purple-600">
-              feeling right now?
-            </span>
-          </h1>
-        </div>
 
-        {/* GRID MOOD */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
-          {moods.map((m, index) => (
-            <button
-              key={m.id}
-              onClick={() => setSelectedMood(m)}
-              style={{ animationDelay: `${index * 100}ms` }}
-              className={`
-                group relative p-6 rounded-[2rem] border transition-all duration-300 ease-out 
-                flex flex-col items-center gap-4 animate-fade-in-up hover-3d
-                ${selectedMood?.id === m.id 
-                  ? "bg-white border-teal-200 shadow-xl ring-4 ring-teal-50 scale-105 z-10" 
-                  : "glass-card border-white/40 hover:bg-white/80"
-                }
-              `}
-            >
-              <div 
-                className={`
-                  p-4 rounded-2xl transition-all duration-300 shadow-sm
-                  ${selectedMood?.id === m.id ? m.bg + " " + m.color : "bg-white/50 text-gray-400 group-hover:" + m.color + " group-hover:" + m.bg}
-                `}
-              >
-                <div className={selectedMood?.id === m.id ? "animate-bounce" : "group-hover:scale-110 transition-transform"}>
-                  {m.icon}
-                </div>
-              </div>
-              <span className={`font-bold text-sm ${selectedMood?.id === m.id ? "text-gray-800" : "text-gray-500 group-hover:text-gray-800"}`}>
-                {m.label}
-              </span>
-            </button>
-          ))}
-        </div>
+          <div className="flex gap-3">
+            {moods.length > 0 && (
+              <button onClick={clearHistory} className="px-4 py-2 bg-rose-100 text-rose-600 rounded-xl font-bold hover:bg-rose-200 transition flex items-center gap-2 cursor-pointer shadow-sm hover:shadow-md">
+                <Trash2 size={18} /> Reset
+              </button>
+            )}
+            <div className="glass-card px-6 py-2 rounded-xl text-sm font-bold text-indigo-600 border border-indigo-100">
+              Total Entries: {moods.length}
+            </div>
+          </div>
+        </header>
 
-        {/* AREA INPUT JURNAL */}
-        <div className={`transition-all duration-500 ease-out overflow-hidden ${selectedMood ? "opacity-100 max-h-[500px]" : "opacity-0 max-h-0"}`}>
-          <div className="glass-panel p-8 rounded-[2.5rem] shadow-xl relative">
-            
-            <div className="flex items-center gap-3 mb-6">
-              <div className={`w-1.5 h-8 rounded-full ${selectedMood?.color?.replace("text-", "bg-") || "bg-gray-300"}`}></div>
-              <h3 className="text-xl font-bold text-gray-800">
-                Why are you feeling {selectedMood?.label}?
-              </h3>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+          {/* KARTU 1: PIE CHART */}
+          <div className="glass-panel p-8 rounded-[2.5rem] flex flex-col items-center animate-fade-in-up hover-3d shadow-xl" style={{ animationDelay: '100ms' }}>
+            <div className="flex items-center gap-2 w-full mb-6 text-gray-700">
+              <div className="p-2.5 bg-teal-100 text-teal-600 rounded-xl"><PieIcon size={20} /></div>
+              <h3 className="font-bold text-lg">Mix Emosi</h3>
             </div>
 
-            <textarea
-              className="w-full p-5 bg-white/50 border border-white/60 rounded-2xl focus:ring-4 focus:ring-teal-100 focus:border-teal-300 outline-none transition-all placeholder:text-gray-400 text-gray-700 shadow-inner resize-none text-lg"
-              rows="3"
-              placeholder="Ceritakan sedikit harimu... (Opsional)"
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-            ></textarea>
-
-            <button 
-              onClick={handleSave}
-              className="w-full mt-6 bg-gray-900 text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-2xl hover:bg-black hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 group"
-            >
-              <Save size={20} className="group-hover:scale-110 transition-transform"/>
-              Save & Continue
-            </button>
+            {moods.length === 0 ? (
+              <div className="text-gray-400 py-10 text-center italic">Data masih kosong.</div>
+            ) : (
+              <>
+                <div className="scale-110 mb-4 drop-shadow-lg">
+                  <PieChart data={chartData} size={180} />
+                </div>
+                <div className="grid grid-cols-2 gap-3 w-full">
+                  {chartData.map((d) => (
+                    d.value > 0 && (
+                      <div key={d.label} className="flex items-center gap-2 text-xs font-bold text-gray-600 bg-white/40 p-2 rounded-lg border border-white/50 backdrop-blur-sm">
+                        <span className="w-2.5 h-2.5 rounded-full shadow-sm" style={{ background: d.color }}></span>
+                        <span className="flex-1">{d.label}</span>
+                        <span className="bg-white px-1.5 py-0.5 rounded text-gray-800 shadow-sm">{d.value}</span>
+                      </div>
+                    )
+                  ))}
+                </div>
+              </>
+            )}
           </div>
-        </div>
 
-        {/* Link History Kecil */}
-        <div className="text-center mt-12 animate-fade-in-up" style={{ animationDelay: '600ms' }}>
-           <button onClick={() => router.push('/mood/analytics')} className="text-gray-500 hover:text-teal-600 font-semibold text-sm flex items-center justify-center gap-2 mx-auto transition-colors">
-              <History size={16}/> Lihat Riwayat Mood Saya
-           </button>
-        </div>
+          {/* KARTU 2: TREND FLOW */}
+          <div className="lg:col-span-2 glass-panel p-8 rounded-[2.5rem] animate-fade-in-up shadow-xl" style={{ animationDelay: '200ms' }}>
+            <div className="flex items-center justify-between w-full mb-8">
+              <div className="flex items-center gap-2">
+                <div className="p-2.5 bg-indigo-100 text-indigo-600 rounded-xl"><TrendingUp size={20} /></div>
+                <h3 className="font-bold text-lg text-gray-700">Flow (7 Entri Terakhir)</h3>
+              </div>
+              <div className="text-xs font-medium text-gray-400 bg-white/50 px-3 py-1 rounded-full border border-white/50">
+                Real-time
+              </div>
+            </div>
 
+            <div className="h-64 flex items-end justify-between gap-3 px-2 pb-2">
+              {recentMoods.length === 0 ? (
+                <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 bg-gray-50/50 rounded-3xl border-2 border-dashed border-gray-300">
+                  <Activity size={48} className="mb-2 opacity-20" />
+                  <p>Mulai tracking untuk melihat grafik!</p>
+                </div>
+              ) : (
+                recentMoods.map((m, i) => {
+                  const moodValue = m.mood === 'Happy' ? 5 : m.mood === 'Neutral' ? 3 : m.mood === 'Sad' ? 2 : 1;
+                  const heightPercentage = Math.max((moodValue / 5) * 100, 15);
+                  const barColor = moodColors[m.mood] || "#d1d5db";
+
+                  return (
+                    <div key={i} className="flex flex-col items-center gap-3 flex-1 h-full justify-end group cursor-help relative">
+                      
+                      {/* Tooltip Floating */}
+                      <div className="mb-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 bg-gray-900 text-white text-[10px] py-1.5 px-3 rounded-lg shadow-xl absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-20 pointer-events-none whitespace-nowrap font-bold">
+                        {m.mood} • {new Date(m.date).getDate()}/{new Date(m.date).getMonth() + 1}
+                        {/* Segitiga kecil bawah tooltip */}
+                        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-900 rotate-45"></div>
+                      </div>
+
+                      {/* The Bar */}
+                      <div
+                        className="w-full max-w-[50px] rounded-2xl transition-all duration-500 ease-out hover:scale-110 hover:-translate-y-2 shadow-md relative overflow-hidden group-hover:shadow-lg"
+                        style={{
+                          height: `${heightPercentage}%`,
+                          backgroundColor: barColor
+                        }}
+                      >
+                        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white/40 to-transparent pointer-events-none"></div>
+                      </div>
+
+                      {/* Date Label */}
+                      <span className="text-[10px] font-bold text-gray-400 group-hover:text-indigo-600 transition-colors">
+                        {new Date(m.date).getDate()}/{new Date(m.date).getMonth() + 1}
+                      </span>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
+
+          {/* KARTU 3: JURNAL */}
+          <div className="lg:col-span-3">
+            <h3 className="font-bold text-xl text-gray-800 mb-6 flex items-center gap-2 pl-2">
+              <Calendar size={20} className="text-rose-500" /> Jurnal Terbaru
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-in-up" style={{ animationDelay: '300ms' }}>
+              {[...moods].reverse().slice(0, 6).map((m, idx) => (
+                <div
+                  key={idx}
+                  className="glass-card p-6 rounded-3xl hover-3d flex gap-5 items-start group border border-white/40 shadow-sm hover:shadow-md transition-all"
+                >
+                  {/* Indicator Line */}
+                  <div
+                    className="w-1.5 h-12 mt-1 rounded-full shadow-sm flex-shrink-0"
+                    style={{ backgroundColor: moodColors[m.mood] || "#d1d5db" }}
+                  ></div>
+
+                  <div className="w-full overflow-hidden">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-black text-gray-800 text-lg group-hover:text-indigo-600 transition-colors">{m.mood}</span>
+                      <span className="text-[10px] font-bold text-gray-400 bg-white/60 px-2 py-1 rounded-lg border border-white/50 flex-shrink-0 ml-2">
+                        {new Date(m.date).toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-600 leading-relaxed italic line-clamp-2">
+                      "{m.note || "Tidak ada catatan."}"
+                    </p>
+                  </div>
+                </div>
+              ))}
+              {moods.length === 0 && (
+                <div className="col-span-2 text-center py-12 text-gray-400 glass-card rounded-3xl border-dashed">
+                  Belum ada riwayat jurnal. Yuk isi dulu!
+                </div>
+              )}
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   );

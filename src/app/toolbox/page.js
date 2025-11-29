@@ -1,26 +1,22 @@
 "use client";
-import { useState, useEffect, Suspense } from "react"; // Tambah useEffect & Suspense
-import { useSearchParams } from "next/navigation"; // Tambah ini
-import { 
-  Wind, Moon, Anchor, Mail, ArrowLeft, Trash2 
-} from "lucide-react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import { Wind, Moon, Anchor, Mail, ArrowLeft, Trash2 } from "lucide-react";
 import Link from "next/link";
 
 import SleepCalculator from "@/components/SleepCalculator";
 import GroundingExercise from "@/components/GroundingExercise";
 import FutureLetter from "@/components/FutureLetter";
-import TheVoid from "@/components/TheVoid"; 
+// Hapus import TheVoid karena sudah pindah halaman
 
-// Kita butuh wrapper component untuk Suspense di Next.js
 function ToolboxContent() {
   const searchParams = useSearchParams();
-  const initialTab = searchParams.get("tool") || "grounding"; // Baca link, default ke grounding
+  const initialTab = searchParams.get("tool") || "grounding";
   const [activeTab, setActiveTab] = useState(initialTab);
 
-  // Update tab jika URL berubah
   useEffect(() => {
     const toolParam = searchParams.get("tool");
-    if (toolParam) {
+    if (toolParam && toolParam !== "void") { // Jangan set activeTab ke void, karena void itu link
       setActiveTab(toolParam);
     }
   }, [searchParams]);
@@ -46,7 +42,7 @@ function ToolboxContent() {
       icon: <Trash2 size={24}/>, 
       color: "from-slate-700 to-black",
       desc: "Buang pikiran negatifmu.",
-      isLink: true,
+      isLink: true, // <--- Ini Link ke halaman baru
       href: "/void"
     },
     { 
@@ -76,7 +72,7 @@ function ToolboxContent() {
                 <Link 
                     key={tool.id} 
                     href={tool.href}
-                    className="group flex lg:flex-col items-center lg:items-start gap-4 p-5 rounded-3xl bg-white/40 border border-white/60 hover:bg-white/80 transition-all hover:scale-105 min-w-[220px] lg:min-w-0 shadow-sm hover:shadow-md"
+                    className="group flex lg:flex-col items-center lg:items-start gap-4 p-5 rounded-3xl bg-white/40 border border-white/60 hover:bg-white/80 transition-all hover:scale-105 min-w-[220px] lg:min-w-0 shadow-sm hover:shadow-md glass-card"
                 >
                     <div className={`p-3 rounded-2xl text-white shadow-lg bg-gradient-to-br ${tool.color} group-hover:rotate-6 transition-transform`}>
                         {tool.icon}
@@ -92,7 +88,7 @@ function ToolboxContent() {
                     key={tool.id}
                     onClick={() => setActiveTab(tool.id)}
                     className={`
-                        group flex lg:flex-col items-center lg:items-start gap-4 p-5 rounded-3xl border transition-all text-left min-w-[220px] lg:min-w-0 relative overflow-hidden
+                        group flex lg:flex-col items-center lg:items-start gap-4 p-5 rounded-3xl border transition-all text-left min-w-[220px] lg:min-w-0 relative overflow-hidden glass-card
                         ${activeTab === tool.id 
                             ? "bg-white shadow-xl border-white scale-105 z-10 ring-4 ring-white/30" 
                             : "bg-white/40 border-white/60 hover:bg-white/60 hover:scale-[1.02]"
@@ -116,7 +112,7 @@ function ToolboxContent() {
 
        {/* CONTENT AREA */}
        <div className="lg:col-span-9">
-          <div className="bg-white/50 backdrop-blur-2xl rounded-[3rem] border border-white/60 shadow-2xl p-6 md:p-12 min-h-[600px] transition-all duration-500 flex flex-col justify-center">
+          <div className="bg-white/50 backdrop-blur-2xl rounded-[3rem] border border-white/60 shadow-2xl p-6 md:p-12 min-h-[600px] transition-all duration-500 flex flex-col justify-center glass-panel">
              
              <div className="animate-fade-in-up key={activeTab} w-full">
                 
@@ -140,17 +136,6 @@ function ToolboxContent() {
                     </div>
                 )}
 
-                {activeTab === "void" && (
-                    <div className="max-w-3xl mx-auto w-full text-center py-4">
-                        <div className="mb-8">
-                            <div className="inline-flex items-center gap-2 mb-4 px-4 py-1 bg-slate-200 text-slate-700 rounded-full text-sm font-bold">
-                                <Trash2 size={16}/> Catharsis
-                            </div>
-                        </div>
-                        <TheVoid />
-                    </div>
-                )}
-
                 {activeTab === "letter" && (
                     <div className="max-w-3xl mx-auto w-full py-4">
                         <div className="text-center mb-10">
@@ -170,10 +155,12 @@ function ToolboxContent() {
 
 export default function ToolboxPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50 to-indigo-50 animate-gradient relative overflow-x-hidden">
+    // PERBAIKAN: Hapus bg-gradient agar transparan
+    <div className="w-full relative overflow-x-hidden min-h-screen">
       
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob pointer-events-none"></div>
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-teal-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000 pointer-events-none"></div>
+      {/* Background Decor (Hanya hiasan di mode default) */}
+      <div className="fixed top-0 right-0 w-[600px] h-[600px] bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob pointer-events-none"></div>
+      <div className="fixed bottom-0 left-0 w-[600px] h-[600px] bg-teal-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000 pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 pt-32 pb-32 relative z-10 flex flex-col">
         <div className="text-center mb-12 animate-fade-in-down">
@@ -183,7 +170,6 @@ export default function ToolboxPage() {
            <p className="text-gray-500 mt-2 font-medium">Pilih alat bantu untuk menenangkan pikiranmu.</p>
         </div>
 
-        {/* Suspense diperlukan saat menggunakan useSearchParams */}
         <Suspense fallback={<div className="text-center py-20">Loading Tools...</div>}>
            <ToolboxContent />
         </Suspense>

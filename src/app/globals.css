@@ -188,3 +188,28 @@ body {
   background-color: rgba(0, 0, 0, 0.2) !important;
   border-bottom-color: rgba(255, 255, 255, 0.1) !important;
 }
+
+/* TAMBAHAN BARU: FIX INPUT & DROPDOWN */
+
+/* Paksa opsi dropdown berwarna gelap di mode ambience */
+.dark-ambience select option {
+  background-color: #1e293b; /* Slate-800 */
+  color: white;
+}
+
+/* Fix icon kalender/jam agar terlihat putih di mode gelap */
+.dark-ambience ::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+/* Pastikan placeholder terlihat */
+.dark-ambience ::placeholder {
+  color: #94a3b8 !important; /* Slate-400 */
+}
+
+/* Pastikan border input terlihat */
+.dark-ambience input, 
+.dark-ambience textarea,
+.dark-ambience select {
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
