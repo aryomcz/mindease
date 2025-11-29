@@ -34,8 +34,8 @@ export default function Footer() {
           {/* 2. NAVIGATION (Tengah - Horizontal) */}
           <nav className="flex flex-wrap justify-center gap-6 text-sm font-bold text-gray-600">
             <Link href="/" className="hover:text-teal-600 transition-colors">Home</Link>
-            <Link href="/mood" className="hover:text-teal-600 transition-colors">Mood Tracker</Link>
-            <Link href="/breathing" className="hover:text-teal-600 transition-colors">Breathing</Link>
+            <Link href="/mood" className="hover:text-teal-600 transition-colors">Mood</Link>
+            <Link href="/toolbox" className="hover:text-teal-600 transition-colors">Toolbox</Link>
             <Link href="/articles" className="hover:text-teal-600 transition-colors">Articles</Link>
             <Link href="/hotline" className="text-rose-500 hover:text-rose-600 transition-colors">Emergency</Link>
           </nav>
@@ -55,11 +55,6 @@ export default function Footer() {
             © {currentYear} MindEase Inc. All rights reserved.
           </p>
           
-          <div className="flex items-center gap-1 bg-white/50 px-3 py-1.5 rounded-full border border-white/60 shadow-sm">
-            <span>Made with</span>
-            <Heart size={12} className="text-rose-500 fill-rose-500 animate-pulse" />
-            <span>for <span className="text-teal-600 font-bold">PRISMA 2025</span></span>
-          </div>
         </div>
 
       </div>
