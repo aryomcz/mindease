@@ -100,10 +100,6 @@ export default function Home() {
                   <Smile size={20} /> Cek Mood
                 </Link>
               )}
-<<<<<<< HEAD
-              <Link href="/breathing" className="flex items-center justify-center gap-2 px-8 py-4 bg-white/80 backdrop-blur text-gray-700 border border-white rounded-2xl font-bold shadow-sm hover:bg-white hover:text-teal-600 transition-all duration-300">
-                <Wind size={20} /> Latihan Napas
-=======
 
               <Link
                 href="/breathing"
@@ -141,7 +137,6 @@ export default function Home() {
                 >
                   Latihan Napas
                 </span>
->>>>>>> b59a6e538eb84dcc0490bae0c557ab917708de43
               </Link>
             </div>
           </div>

@@ -9,7 +9,6 @@ import { UserProvider } from "@/context/UserContext";
 import OfflineIndicator from "@/components/OfflineIndicator";
 
 export const metadata = {
-<<<<<<< HEAD
   title: "Lumind - Your Mental Health Companion",
   description: "A safe space to track mood, breathe, and find peace.",
   manifest: "/manifest.json", 
@@ -18,10 +17,6 @@ export const metadata = {
     apple: '/icon-192.png', 
   },
   themeColor: "#f0fdfa", 
-=======
-  title: "LuMind",
-  description: "Your Mental Wellness Companion",
->>>>>>> b59a6e538eb84dcc0490bae0c557ab917708de43
 };
 
 export default function RootLayout({ children }) {
