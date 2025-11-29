@@ -137,3 +137,54 @@ body {
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* =========================================
+   AUTOMATIC DARK MODE (AMBIENCE)
+   ========================================= */
+
+/* 1. UBAH WARNA TEKS JADI PUTIH/TERANG */
+.dark-ambience .text-gray-900,
+.dark-ambience .text-gray-800,
+.dark-ambience .text-gray-700,
+.dark-ambience .text-gray-600 {
+  color: #f1f5f9 !important; /* Slate-100 */
+}
+
+.dark-ambience .text-gray-500,
+.dark-ambience .text-gray-400 {
+  color: #cbd5e1 !important; /* Slate-300 */
+}
+
+/* 2. UBAH WARNA JUDUL GRADIENT JADI PUTIH */
+.dark-ambience .text-transparent.bg-clip-text {
+  background: none !important;
+  -webkit-text-fill-color: white !important;
+  color: white !important;
+  text-shadow: 0 0 20px rgba(255,255,255,0.5);
+}
+
+/* 3. UBAH KARTU KACA (GLASS) JADI GELAP TRANSPARAN */
+/* Ini penting biar teks putih bisa dibaca di atas kartu */
+.dark-ambience .bg-white\/80,
+.dark-ambience .bg-white\/70,
+.dark-ambience .bg-white\/60,
+.dark-ambience .bg-white\/50,
+.dark-ambience .bg-white\/40, 
+.dark-ambience .glass-panel,
+.dark-ambience .glass-card {
+  background-color: rgba(0, 0, 0, 0.4) !important; /* Hitam Transparan */
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* 4. UBAH TOMBOL/INPUT BIAR TETAP KELIHATAN */
+.dark-ambience input, 
+.dark-ambience textarea {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  color: white !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.dark-ambience nav {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}

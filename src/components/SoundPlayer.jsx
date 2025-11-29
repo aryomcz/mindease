@@ -1,12 +1,14 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { CloudRain, Trees, Coffee, Volume2, X, Music } from "lucide-react";
+import { CloudRain, Trees, Coffee, Volume2, X, Music, Power } from "lucide-react";
+import { useAmbience } from "@/context/AmbienceContext"; // Import Context
 
 export default function SoundPlayer() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSound, setActiveSound] = useState(null);
   const [volume, setVolume] = useState(0.5);
-
+  
+  const { setAmbience } = useAmbience(); // Pakai Context
   const audioRef = useRef(null);
 
   const sounds = [
@@ -29,6 +31,26 @@ export default function SoundPlayer() {
       url: "/sounds/cafe.mp3" 
     },
   ];
+
+  // Fungsi Ganti Suara & Background
+  const handleSoundChange = (id) => {
+    if (activeSound === id) {
+        // Matikan
+        setActiveSound(null);
+        setAmbience("default"); // Balik ke background awal
+    } else {
+        // Hidupkan
+        setActiveSound(id);
+        setAmbience(id); // Ubah background sesuai id suara
+    }
+  };
+
+  // Fungsi Matikan Semua
+  const handleStopAll = () => {
+      setActiveSound(null);
+      setAmbience("default");
+      setIsOpen(false);
+  };
 
   useEffect(() => {
     if (audioRef.current) {
@@ -72,41 +94,38 @@ export default function SoundPlayer() {
       >
         <div className="flex justify-between items-center mb-4 min-w-[200px]">
             <h3 className="text-sm font-bold text-gray-700 flex items-center gap-2">
-                <Music size={16} className="text-teal-500"/> Soundscapes
+                <Music size={16} className="text-teal-500"/> Ambience
             </h3>
-            <button 
-                onClick={() => setIsOpen(false)} 
-                className="text-gray-400 hover:text-rose-500"
-                aria-label="Tutup panel suara"
-            >
-                <X size={16} />
-            </button>
+            
+            {/* Tombol Reset */}
+            <div className="flex gap-2">
+                {activeSound && (
+                    <button onClick={handleStopAll} className="text-rose-500 hover:text-rose-700 text-xs font-bold" aria-label="Matikan suara">
+                        Reset
+                    </button>
+                )}
+                <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-rose-500" aria-label="Tutup panel">
+                    <X size={16} />
+                </button>
+            </div>
         </div>
 
         <div className="grid grid-cols-3 gap-2 mb-4">
             {sounds.map((sound) => (
                 <button
                     key={sound.id}
-                    onClick={() => setActiveSound(activeSound === sound.id ? null : sound.id)}
-                    aria-label={`Putar suara ${sound.label}`}
+                    onClick={() => handleSoundChange(sound.id)}
+                    aria-label={`Mode ${sound.label}`}
                     className={`
-                        flex flex-col items-center justify-center p-3 rounded-xl transition-all
+                        flex flex-col items-center justify-center p-3 rounded-xl transition-all duration-300
                         ${activeSound === sound.id 
-                            ? "bg-teal-500 text-white shadow-lg scale-105" 
-                            : "bg-white/50 border border-white/50 text-gray-500 hover:bg-teal-50 hover:text-teal-600"
+                            ? "bg-teal-600 text-white shadow-lg scale-105" 
+                            : "bg-gray-100 text-gray-500 hover:bg-teal-50 hover:text-teal-600"
                         }
                     `}
                 >
                     {sound.icon}
                     <span className="text-[10px] mt-1 font-medium">{sound.label}</span>
-                    
-                    {activeSound === sound.id && (
-                         <div className="flex gap-0.5 mt-1 h-2 items-end">
-                             <div className="w-0.5 bg-white/70 animate-[bounce_1s_infinite] h-full"></div>
-                             <div className="w-0.5 bg-white/70 animate-[bounce_1.2s_infinite] h-[60%]"></div>
-                             <div className="w-0.5 bg-white/70 animate-[bounce_0.8s_infinite] h-[80%]"></div>
-                         </div>
-                    )}
                 </button>
             ))}
         </div>
@@ -129,12 +148,12 @@ export default function SoundPlayer() {
       {/* TOMBOL PEMICU */}
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? "Tutup menu suara" : "Buka menu suara latar"}
+        aria-label="Menu Suara Latar"
         className={`
             p-3 md:p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 active:scale-95
             flex items-center justify-center relative border border-white/40 backdrop-blur-md
             ${isOpen || activeSound 
-                ? "bg-teal-500 text-white rotate-0 shadow-teal-200" 
+                ? "bg-teal-600 text-white rotate-0 shadow-teal-200" 
                 : "bg-white/70 text-teal-600 hover:bg-white"
             }
         `}
@@ -147,14 +166,6 @@ export default function SoundPlayer() {
             </div>
         ) : (
             <Music size={20} />
-        )}
-
-        {/* Indikator Aktif */}
-        {activeSound && (
-            <span className="absolute -top-1 -right-1 flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 border border-white"></span>
-            </span>
         )}
       </button>
     </div>

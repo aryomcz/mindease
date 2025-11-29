@@ -7,6 +7,9 @@ import LoadingScreen from "@/components/LoadingScreen";
 import WelcomeModal from "@/components/WelcomeModal";
 import { UserProvider } from "@/context/UserContext";
 import OfflineIndicator from "@/components/OfflineIndicator";
+import AmbienceBackground from "@/components/AmbienceBackground"; 
+import { AmbienceProvider } from "@/context/AmbienceContext"; 
+import ThemeWrapper from "@/components/ThemeWrapper";
 
 export const metadata = {
   title: "Lumind - Your Mental Health Companion",
@@ -22,19 +25,32 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body >
-        <div className="min-h-screen w-full relative overflow-hidden flex flex-col">
-          <LoadingScreen />
+      <body>
+        <AmbienceProvider>
           <UserProvider>
-            <WelcomeModal />
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <SoundPlayer />
-            <MobileDock />
-            <OfflineIndicator />
-            <Footer />
+            
+            <div className="min-h-screen w-full relative overflow-hidden flex flex-col">
+              <LoadingScreen />
+              <AmbienceBackground /> 
+              <WelcomeModal />
+              
+              {/* 2. BUNGKUS KONTEN DENGAN THEME WRAPPER */}
+              <ThemeWrapper>
+                 <Navbar />
+                 <main className="flex-1 relative z-10">
+                   {children}
+                 </main>
+                 <Footer />
+              </ThemeWrapper>
+
+              <SoundPlayer />
+              <MobileDock />
+              <OfflineIndicator />
+              
+            </div>
+
           </UserProvider>
-        </div>
+        </AmbienceProvider>
       </body>
     </html>
   );
