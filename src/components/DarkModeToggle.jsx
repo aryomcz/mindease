@@ -22,7 +22,7 @@ export default function DarkModeToggle() {
   };
 
   return (
-    <button className="bg-white p-2 rounded-lg shadow text-sm" onClick={toggle}>
+    <button className="bg-white p-2 rounded-lg shadow text-sm cursor-pointer" onClick={toggle}>
       {mode === "dark" ? "🌙 Dark" : "☀️ Light"}
     </button>
   );

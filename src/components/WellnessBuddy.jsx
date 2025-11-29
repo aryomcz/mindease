@@ -53,7 +53,7 @@ export default function WellnessBuddy() {
   const mascot = getMascotState();
 
   return (
-    <div className="bg-white/80 backdrop-blur-xl p-6 rounded-3xl shadow-xl border border-white/60 max-w-sm w-full transform transition-all hover:scale-[1.02]">
+    <div className="bg-white/80 backdrop-blur-xl p-6 rounded-3xl shadow-xl border border-white/60 max-w-sm w-full transform transition-all hover:scale-[1.02] cursor-pointer">
       
       {/* HEADER: MASKOT */}
       <div className="text-center mb-6 relative">
@@ -87,7 +87,7 @@ export default function WellnessBuddy() {
           <button
             key={task.id}
             onClick={() => toggleTask(task.id)}
-            className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all duration-300 text-left group
+            className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all duration-300 text-left group cursor-pointer
               ${task.done 
                 ? "bg-teal-50 border-teal-200 text-gray-400 line-through" 
                 : "bg-white border-gray-100 hover:border-teal-300 text-gray-700"

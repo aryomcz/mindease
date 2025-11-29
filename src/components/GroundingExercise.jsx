@@ -68,7 +68,7 @@ export default function GroundingExercise() {
           </p>
           <button 
             onClick={handleNext}
-            className="w-full py-4 bg-teal-600 text-white rounded-xl font-bold shadow-lg hover:bg-teal-700 hover:shadow-xl hover:-translate-y-1 transition-all flex items-center justify-center gap-2"
+            className="w-full py-4 bg-teal-600 text-white rounded-xl font-bold shadow-lg hover:bg-teal-700 hover:shadow-xl hover:-translate-y-1 transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             Mulai Teknik Ini <ArrowRight size={20}/>
           </button>
@@ -80,7 +80,7 @@ export default function GroundingExercise() {
         <div className="text-center animate-fade-in-up py-4" key={step}>
           <div className="flex justify-between items-center mb-8 text-sm font-bold text-gray-400">
              <span>Langkah {step} dari 5</span>
-             <button onClick={handleReset} className="hover:text-rose-500"><RefreshCcw size={16}/></button>
+             <button onClick={handleReset} className="hover:text-rose-500 cursor-pointer"><RefreshCcw size={16}/></button>
           </div>
 
           <div className={`mx-auto w-24 h-24 rounded-full flex items-center justify-center mb-6 shadow-inner ${steps[step-1].color.split(" ")[0]}`}>
@@ -100,7 +100,7 @@ export default function GroundingExercise() {
 
           <button 
             onClick={handleNext}
-            className="w-full py-3 border-2 border-gray-200 text-gray-600 rounded-xl font-bold hover:border-teal-500 hover:text-teal-600 hover:bg-teal-50 transition-all"
+            className="w-full py-3 border-2 border-gray-200 text-gray-600 rounded-xl font-bold hover:border-teal-500 hover:text-teal-600 hover:bg-teal-50 transition-all cursor-pointer"
           >
             Saya sudah menemukannya
           </button>
@@ -119,7 +119,7 @@ export default function GroundingExercise() {
           </p>
           <button 
             onClick={handleReset}
-            className="w-full py-4 bg-gray-800 text-white rounded-xl font-bold hover:bg-black transition-all"
+            className="w-full py-4 bg-gray-800 text-white rounded-xl font-bold hover:bg-black transition-all cursor-pointer"
           >
             Selesai
           </button>

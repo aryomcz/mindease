@@ -32,7 +32,7 @@ export default function MoodPage() {
     localStorage.setItem("moods", JSON.stringify([...existingData, newEntry]));
 
     setIsSaved(true);
-    
+
     // Redirect otomatis
     setTimeout(() => {
       router.push("/mood/analytics");
@@ -56,20 +56,20 @@ export default function MoodPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-teal-50 animate-gradient relative overflow-hidden">
-      
+
       {/* Background Blobs (Biar konsisten sama Home) */}
       <div className="absolute top-0 -left-20 w-96 h-96 bg-teal-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob pointer-events-none"></div>
       <div className="absolute bottom-0 -right-20 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000 pointer-events-none"></div>
 
       <div className="max-w-4xl mx-auto px-6 pt-36 pb-32 relative z-10">
-        
+
         {/* Header */}
         <div className="text-center mb-12 space-y-4 animate-fade-in-up">
           <div className="inline-block px-5 py-2 rounded-full bg-white/60 backdrop-blur-sm border border-white/50 text-sm font-bold text-indigo-600 shadow-sm">
             ✨ Daily Check-in
           </div>
           <h1 className="text-5xl md:text-6xl font-black text-gray-800 tracking-tight leading-tight text-glow">
-            How are you <br/>
+            How are you <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-purple-600">
               feeling right now?
             </span>
@@ -85,15 +85,15 @@ export default function MoodPage() {
               style={{ animationDelay: `${index * 100}ms` }}
               className={`
                 group relative p-6 rounded-[2rem] border transition-all duration-300 ease-out 
-                flex flex-col items-center gap-4 animate-fade-in-up hover-3d
-                ${selectedMood?.id === m.id 
-                  ? "bg-white border-teal-200 shadow-xl ring-4 ring-teal-50 scale-105 z-10" 
+                flex flex-col items-center gap-4 animate-fade-in-up hover-3d cursor-pointer
+                ${selectedMood?.id === m.id
+                  ? "bg-white border-teal-200 shadow-xl ring-4 ring-teal-50 scale-105 z-10"
                   : "glass-card border-white/40 hover:bg-white/80"
                 }
               `}
             >
               {/* Icon Container */}
-              <div 
+              <div
                 className={`
                   p-4 rounded-2xl transition-all duration-300 shadow-sm
                   ${selectedMood?.id === m.id ? m.bg + " " + m.color : "bg-white/50 text-gray-400 group-hover:" + m.color + " group-hover:" + m.bg}
@@ -115,7 +115,7 @@ export default function MoodPage() {
         {/* AREA INPUT JURNAL (Muncul dengan animasi halus) */}
         <div className={`transition-all duration-500 ease-out overflow-hidden ${selectedMood ? "opacity-100 max-h-[500px]" : "opacity-0 max-h-0"}`}>
           <div className="glass-panel p-8 rounded-[2.5rem] shadow-xl relative">
-            
+
             <div className="flex items-center gap-3 mb-6">
               <div className={`w-1.5 h-8 rounded-full ${selectedMood?.color?.replace("text-", "bg-") || "bg-gray-300"}`}></div>
               <h3 className="text-xl font-bold text-gray-800">
@@ -131,11 +131,11 @@ export default function MoodPage() {
               onChange={(e) => setNote(e.target.value)}
             ></textarea>
 
-            <button 
+            <button
               onClick={handleSave}
-              className="w-full mt-6 bg-gray-900 text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-2xl hover:bg-black hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 group"
+              className="w-full mt-6 bg-gray-900 text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-2xl hover:bg-black hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer"
             >
-              <Save size={20} className="group-hover:scale-110 transition-transform"/>
+              <Save size={20} className="group-hover:scale-110 transition-transform" />
               Save & Continue
             </button>
           </div>
@@ -143,9 +143,9 @@ export default function MoodPage() {
 
         {/* Link History Kecil di Bawah */}
         <div className="text-center mt-12 animate-fade-in-up" style={{ animationDelay: '600ms' }}>
-           <button onClick={() => router.push('/mood/analytics')} className="text-gray-500 hover:text-teal-600 font-semibold text-sm flex items-center justify-center gap-2 mx-auto transition-colors">
-              <History size={16}/> Lihat Riwayat Mood Saya
-           </button>
+          <button onClick={() => router.push('/mood/analytics')} className="text-gray-500 hover:text-teal-600 font-semibold text-sm flex items-center justify-center gap-2 mx-auto transition-colors cursor-pointer">
+            <History size={16} /> Lihat Riwayat Mood Saya
+          </button>
         </div>
 
       </div>

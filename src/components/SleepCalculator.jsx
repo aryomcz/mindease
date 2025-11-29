@@ -56,7 +56,7 @@ export default function SleepCalculator() {
           />
           <button
             onClick={calculateSleepTimes}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 rounded-xl font-bold shadow-lg shadow-indigo-200 transition-all active:scale-95"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 rounded-xl font-bold shadow-lg shadow-indigo-200 transition-all active:scale-95 cursor-pointer"
           >
             Hitung
           </button>

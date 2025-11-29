@@ -42,7 +42,7 @@ export default function PopItGame() {
         </h3>
         <button 
           onClick={resetGame}
-          className="p-2 bg-white dark:bg-slate-700 rounded-full shadow-sm hover:rotate-180 transition-transform duration-500 text-teal-600 dark:text-teal-400"
+          className="p-2 bg-white dark:bg-slate-700 rounded-full shadow-sm hover:rotate-180 transition-transform duration-500 text-teal-600 dark:text-teal-400 cursor-pointer"
           title="Reset"
         >
           <RefreshCw size={20} />
@@ -60,7 +60,7 @@ export default function PopItGame() {
             key={index}
             onClick={() => handlePop(index)}
             className={`
-              w-10 h-10 rounded-full shadow-[inset_-2px_-4px_6px_rgba(0,0,0,0.1)] transition-all duration-200
+              w-10 h-10 rounded-full shadow-[inset_-2px_-4px_6px_rgba(0,0,0,0.1)] transition-all duration-200 cursor-pointer
               ${isPopped 
                 ? "bg-gray-300 dark:bg-slate-700 scale-90 shadow-inner translate-y-1" // Style saat PECAH
                 : "bg-gradient-to-tr from-teal-400 to-cyan-300 hover:brightness-110 active:scale-95 shadow-lg transform hover:-translate-y-0.5" // Style saat UTUH

@@ -17,7 +17,7 @@ export default function LoadingScreen() {
   return (
     <div
       className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50 via-teal-50 to-white transition-opacity duration-700 ease-out ${
-        loading ? "opacity-100" : "opacity-0 pointer-events-none"
+        loading ? "opacity-100" : "opacity-0 hidden pointer-events-none"
       }`}
     >
       <div className="relative">

@@ -87,7 +87,7 @@ export default function FutureLetter() {
             <button
               onClick={handleSave}
               disabled={!message || !unlockTime}
-              className="w-full py-3 bg-gray-800 text-white rounded-xl font-bold hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="w-full py-3 bg-gray-800 text-white rounded-xl font-bold hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
             >
               Kunci Pesan
             </button>
@@ -113,7 +113,7 @@ export default function FutureLetter() {
                <div key={letter.id} className="group relative">
                  <button
                    onClick={() => isUnlocked ? setViewingLetter(letter) : alert(`Sabar ya! Surat ini baru bisa dibuka pada ${new Date(letter.unlockDate).toLocaleString()}`)}
-                   className={`w-full text-left p-4 rounded-xl border transition-all duration-300 flex items-center gap-4
+                   className={`w-full text-left p-4 rounded-xl border transition-all duration-300 flex items-center gap-4 cursor-pointer
                      ${isUnlocked 
                        ? "bg-white border-teal-200 hover:shadow-md hover:border-teal-400 cursor-pointer" 
                        : "bg-gray-50 border-gray-200 opacity-70 cursor-lock"
@@ -137,7 +137,7 @@ export default function FutureLetter() {
                  {/* Tombol Hapus */}
                  <button 
                     onClick={(e) => { e.stopPropagation(); handleDelete(letter.id); }}
-                    className="absolute top-4 right-4 text-gray-300 hover:text-rose-500 transition-colors"
+                    className="absolute top-4 right-4 text-gray-300 hover:text-rose-500 transition-colors cursor-pointer"
                  >
                     <Trash2 size={16}/>
                  </button>
@@ -153,7 +153,7 @@ export default function FutureLetter() {
            <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative border-t-8 border-teal-500">
               <button 
                 onClick={() => setViewingLetter(null)}
-                className="absolute top-4 right-4 p-2 bg-gray-100 rounded-full hover:bg-gray-200"
+                className="absolute top-4 right-4 p-2 bg-gray-100 rounded-full hover:bg-gray-200 cursor-pointer"
               >
                 <X_Icon /> 
               </button>
@@ -174,7 +174,7 @@ export default function FutureLetter() {
 
               <button 
                 onClick={() => setViewingLetter(null)}
-                className="w-full py-3 bg-teal-600 text-white rounded-xl font-bold hover:bg-teal-700 transition"
+                className="w-full py-3 bg-teal-600 text-white rounded-xl font-bold hover:bg-teal-700 transition cursor-pointer"
               >
                 Simpan Kembali
               </button>

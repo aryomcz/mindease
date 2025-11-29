@@ -59,7 +59,7 @@ export default function SoundPlayer() {
     // Desktop: bottom-6 right-6 (Di bawah pojok)
     <div className={`
         fixed z-[60] flex flex-col items-end transition-all duration-500
-        top-20 right-4 
+         right-4 top-1/2 
         md:top-auto md:bottom-6 md:right-6
     `}>
       
@@ -70,14 +70,14 @@ export default function SoundPlayer() {
         className={`
           mb-4 bg-white/80 backdrop-blur-xl border border-white/60 
           p-5 rounded-2xl shadow-2xl transition-all duration-300 origin-top-right md:origin-bottom-right
-          ${isOpen ? "scale-100 opacity-100 translate-y-0" : "scale-0 opacity-0 -translate-y-10 md:translate-y-10 pointer-events-none"}
+          ${isOpen ? "scale-100 opacity-100 translate-y-0 block" : "scale-0 opacity-0 -translate-y-10 md:translate-y-10 pointer-events-none hidden"}
         `}
       >
         <div className="flex justify-between items-center mb-4 min-w-[200px]">
             <h3 className="text-sm font-bold text-gray-700 flex items-center gap-2">
                 <Music size={16} className="text-teal-500"/> Soundscapes
             </h3>
-            <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-rose-500">
+            <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-rose-500 cursor-pointer">
                 <X size={16} />
             </button>
         </div>
@@ -88,7 +88,7 @@ export default function SoundPlayer() {
                     key={sound.id}
                     onClick={() => setActiveSound(activeSound === sound.id ? null : sound.id)}
                     className={`
-                        flex flex-col items-center justify-center p-3 rounded-xl transition-all
+                        flex flex-col items-center justify-center p-3 rounded-xl transition-all cursor-pointer
                         ${activeSound === sound.id 
                             ? "bg-teal-500 text-white shadow-lg scale-105" 
                             : "bg-white/50 border border-white/50 text-gray-500 hover:bg-teal-50 hover:text-teal-600"
@@ -128,7 +128,7 @@ export default function SoundPlayer() {
         onClick={() => setIsOpen(!isOpen)}
         className={`
             p-3 md:p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 active:scale-95
-            flex items-center justify-center relative border border-white/40 backdrop-blur-md
+            flex items-center justify-center relative border border-white/40 backdrop-blur-md cursor-pointer
             ${isOpen || activeSound 
                 ? "bg-teal-500 text-white rotate-0 shadow-teal-200" 
                 : "bg-white/70 text-teal-600 hover:bg-white"
