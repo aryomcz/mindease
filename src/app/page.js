@@ -78,7 +78,7 @@ export default function Home() {
             </h1>
 
             <p className="text-xl text-gray-600 leading-relaxed max-w-lg mx-auto lg:mx-0">
-              MindEase adalah ruang digital untuk merawat pikiranmu. Lacak emosi, atur napas, dan temukan ketenangan.
+              LuMind adalah ruang digital untuk merawat pikiranmu. Lacak emosi, atur napas, dan temukan ketenangan.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-6">
@@ -100,8 +100,48 @@ export default function Home() {
                   <Smile size={20} /> Cek Mood
                 </Link>
               )}
+<<<<<<< HEAD
               <Link href="/breathing" className="flex items-center justify-center gap-2 px-8 py-4 bg-white/80 backdrop-blur text-gray-700 border border-white rounded-2xl font-bold shadow-sm hover:bg-white hover:text-teal-600 transition-all duration-300">
                 <Wind size={20} /> Latihan Napas
+=======
+
+              <Link
+                href="/breathing"
+                className="
+                group
+                flex items-center justify-center gap-2
+                px-8 py-4
+                bg-white/80 backdrop-blur
+                text-gray-700
+                border border-white rounded-2xl
+                font-bold shadow-sm
+                hover:bg-white hover:text-teal-600
+                transition-all duration-300
+              "
+              >
+                {/* Ikon Wind bergerak saat hover */}
+                <Wind
+                  size={20}
+                  className="
+                  transition-transform duration-500 opacity-0
+                  group-hover:-translate-x-1 group-hover:opacity-100
+                  -translate-x-0.5    
+                "
+                />
+
+                {/* Teks dengan animasi opacity & gerakan */}
+                <span
+                  className="
+                  inline-block 
+                  transition-all duration-500
+                  opacity-60 -translate-x-2     /* Saat tidak di hover → dihisap */
+                  group-hover:opacity-100       /* Saat hover → jelas */
+                  group-hover:translate-x-1     /* Ditiup ke kanan */
+                "
+                >
+                  Latihan Napas
+                </span>
+>>>>>>> b59a6e538eb84dcc0490bae0c557ab917708de43
               </Link>
             </div>
           </div>
@@ -109,7 +149,7 @@ export default function Home() {
           <div className="relative flex justify-center items-center h-[400px] animate-fade-in-up" style={{ animationDelay: '200ms' }}>
             <div className="absolute w-72 h-72 bg-teal-200/40 rounded-full animate-breathe blur-xl"></div>
             <div className="absolute w-56 h-56 bg-purple-200/40 rounded-full animate-breathe animation-delay-2000 blur-lg"></div>
-            <div className="relative z-20 bg-white/70 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/50 text-center max-w-xs transform hover:scale-105 transition duration-500">
+            <div className="relative z-20 bg-white/70 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/50 text-center max-w-xs transform hover:scale-105 transition duration-500 cursor-pointer">
               <div className="bg-gradient-to-tr from-rose-100 to-orange-100 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-inner">
                 <Heart className="text-rose-500 fill-rose-500 animate-pulse" size={32} />
               </div>
@@ -239,9 +279,31 @@ export default function Home() {
                 <p className="text-indigo-100 text-lg mb-6 leading-relaxed">
                   Bangun kebiasaan baik setiap hari. Selesaikan target kecilmu untuk melihat teman virtualmu bahagia!
                 </p>
-                <div className="inline-flex gap-2 bg-white/20 backdrop-blur px-4 py-2 rounded-lg text-sm font-bold border border-white/10">
-                  🐣 Live Tracker
+                <div className="relative inline-block group rounded-lg p-[2px]">
+                  {/* Gradient Border (Hanya Saat Hover) */}
+                  <div
+                    className="
+      absolute inset-0 rounded-lg 
+      bg-gradient-to-r from-teal-400 to-indigo-500
+      opacity-0 group-hover:opacity-100
+      transition-opacity duration-300
+    "
+                  ></div>
+
+                  {/* Content */}
+                  <div
+                    className="
+      relative z-10
+      inline-flex gap-2
+      bg-white/20 backdrop-blur
+      px-4 py-2 rounded-lg text-sm font-bold
+      border border-white/20
+    "
+                  >
+                    🐣 Live Tracker
+                  </div>
                 </div>
+
               </div>
               <div className="flex justify-center">
                 <WellnessBuddy />

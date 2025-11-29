@@ -1,13 +1,14 @@
 "use client";
 import articles from "@/data/articles";
 import Link from "next/link";
+import React from "react"
 import { ArrowLeft, Clock, Calendar, Share2, Bookmark } from "lucide-react";
 
 export default function ArticleDetail({ params }) {
     // Pastikan logic params.id sesuai dengan versi Next.js kamu
-    // Jika error, coba: const { id } = React.use(params); di Next 15
-    const id = parseInt(params.id);
-    const article = articles.find((a) => a.id === id);
+    const { id } = React.use(params);
+    // const id = parseInt(params.id);
+    const article = articles.find((a) => a.id == id);
 
     if (!article) {
         return (
@@ -92,7 +93,7 @@ export default function ArticleDetail({ params }) {
                             ME
                         </div>
                         <div>
-                            <p className="font-bold text-gray-800">MindEase Team</p>
+                            <p className="font-bold text-gray-800">LuMind Team</p>
                             <p className="text-xs text-gray-500">Mental Health Specialist</p>
                         </div>
                     </div>

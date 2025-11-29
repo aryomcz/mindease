@@ -56,7 +56,7 @@ export default function WelcomeModal() {
                 Hai, Selamat Datang!
               </h2>
               <p className="text-gray-500 mb-8 leading-relaxed">
-                MindEase adalah ruang amanmu untuk beristirahat, bercerita, dan tumbuh.  
+                LuMind adalah ruang amanmu untuk beristirahat, bercerita, dan tumbuh.  
                 Sebelum kita mulai, boleh kami mengenalmu?
               </p>
 

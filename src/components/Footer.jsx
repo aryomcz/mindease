@@ -27,7 +27,7 @@ export default function Footer() {
                 <Smile size={20} />
               </div>
               <span className="text-xl font-black text-gray-800 tracking-tight">
-                MindEase
+                LuMind
               </span>
             </Link>
             <p className="text-gray-500 text-sm max-w-xs text-center md:text-left">
@@ -56,7 +56,7 @@ export default function Footer() {
         {/* LOWER SECTION: Copyright & Credits */}
         <div className="mt-10 pt-6 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-400 font-medium">
           <p>
-            © {currentYear} MindEase Inc. All rights reserved.
+            © {currentYear} LuMind Inc. All rights reserved.
           </p>
           
         </div>
