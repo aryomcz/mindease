@@ -1,42 +1,32 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { 
-  ArrowRight, Wind, Smile, BookOpen, Heart, Sun, CloudRain, 
-  Moon, Gamepad2, Anchor, Mail, Sparkles 
-} from "lucide-react";
+import { ArrowRight, Wind, Smile, BookOpen, Heart, Sun, CloudRain, Gamepad2 } from "lucide-react";
 
-// Import Components
+// Components
 import QuoteCard from "@/components/QuoteCard"; 
-import PopItGame from "@/components/PopItGame";
-import SleepCalculator from "@/components/SleepCalculator";
-import GroundingExercise from "@/components/GroundingExercise";
-import FutureLetter from "@/components/FutureLetter";
+import PopItGame from "@/components/PopItGame"; // <--- Pastikan ini di-import
 import WellnessBuddy from "@/components/WellnessBuddy";
 import WelcomeModal from "@/components/WelcomeModal";
 
 export default function Home() {
   const [userName, setUserName] = useState("");
   const [greeting, setGreeting] = useState("Hello");
-  
-  // State untuk Tab Aktif (Default: Sleep)
-  const [activeTab, setActiveTab] = useState("grounding");
+  const [lastMood, setLastMood] = useState(null);
 
-  // Logic Sapaan
   useEffect(() => {
+    // Logic Sapaan Waktu
     const hour = new Date().getHours();
     if (hour < 12) setGreeting("Selamat Pagi");
     else if (hour < 18) setGreeting("Selamat Siang");
     else setGreeting("Selamat Malam");
-  }, []);
 
-  // Data Tabs untuk Wellness Hub
-  const tabs = [
-    { id: "grounding", label: "Calm Down", icon: <Anchor size={20}/>, color: "bg-purple-500", desc: "Redakan cemas (5-4-3-2-1)" },
-    { id: "sleep", label: "Sleep Well", icon: <Moon size={20}/>, color: "bg-indigo-500", desc: "Kalkulator tidur" },
-    { id: "play", label: "Relax Zone", icon: <Gamepad2 size={20}/>, color: "bg-teal-500", desc: "Main Pop-It" },
-    { id: "letter", label: "Time Capsule", icon: <Mail size={20}/>, color: "bg-rose-500", desc: "Surat masa depan" },
-  ];
+    // Logic Ambil Mood Terakhir
+    const savedMoods = JSON.parse(localStorage.getItem("moods") || "[]");
+    if (savedMoods.length > 0) {
+      setLastMood(savedMoods[savedMoods.length - 1]);
+    }
+  }, []);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-teal-50 animate-gradient overflow-hidden relative text-gray-800">
@@ -52,6 +42,7 @@ export default function Home() {
         {/* ================= HERO SECTION ================= */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-24">
           <div className="text-center lg:text-left space-y-6 animate-fade-in-up">
+            
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/60 backdrop-blur border border-white/50 shadow-sm text-indigo-600 text-sm font-bold mb-2">
               <span className="relative flex h-3 w-3">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
@@ -79,20 +70,43 @@ export default function Home() {
             </h1>
             
             <p className="text-xl text-gray-600 leading-relaxed max-w-lg mx-auto lg:mx-0">
-              MindEase adalah ruang digital untuk merawat pikiranmu. Lacak emosi, atur napas, dan temukan ketenangan—semua di satu tempat.
+              MindEase adalah ruang digital untuk merawat pikiranmu. Lacak emosi, atur napas, dan temukan ketenangan.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-6">
-              <Link href="/mood" className="flex items-center justify-center gap-2 px-8 py-4 bg-teal-600 text-white rounded-2xl font-bold shadow-lg shadow-teal-200 hover:bg-teal-700 hover:-translate-y-1 transition-all duration-300">
-                <Smile size={20} /> Cek Mood
-              </Link>
+              
+              {lastMood ? (
+                // JIKA SUDAH ADA MOOD
+                <div className="flex items-center gap-4 bg-white/80 backdrop-blur border border-white p-2 pr-6 rounded-2xl shadow-lg animate-fade-in-up">
+                   <div className={`p-3 rounded-xl text-white shadow-md ${
+                      lastMood.mood === 'Happy' ? 'bg-green-500' :
+                      lastMood.mood === 'Sad' ? 'bg-blue-500' :
+                      lastMood.mood === 'Angry' ? 'bg-rose-500' :
+                      lastMood.mood === 'Stressed' ? 'bg-purple-500' : 'bg-yellow-500'
+                   }`}>
+                      <Smile size={24} />
+                   </div>
+                   <div className="text-left">
+                      <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">Last Check-in</p>
+                      <p className="text-lg font-black text-gray-800">{lastMood.mood}</p>
+                   </div>
+                   <Link href="/mood" className="ml-2 p-2 bg-gray-100 hover:bg-teal-100 hover:text-teal-600 rounded-full transition-colors" title="Update Mood">
+                      <ArrowRight size={16}/>
+                   </Link>
+                </div>
+              ) : (
+                // JIKA BELUM ADA
+                <Link href="/mood" className="flex items-center justify-center gap-2 px-8 py-4 bg-teal-600 text-white rounded-2xl font-bold shadow-lg shadow-teal-200 hover:bg-teal-700 hover:-translate-y-1 transition-all duration-300">
+                  <Smile size={20} /> Cek Mood
+                </Link>
+              )}
+
               <Link href="/breathing" className="flex items-center justify-center gap-2 px-8 py-4 bg-white/80 backdrop-blur text-gray-700 border border-white rounded-2xl font-bold shadow-sm hover:bg-white hover:text-teal-600 transition-all duration-300">
                 <Wind size={20} /> Latihan Napas
               </Link>
             </div>
           </div>
 
-          {/* Visual Breathing Circle */}
           <div className="relative flex justify-center items-center h-[400px] animate-fade-in-up" style={{ animationDelay: '200ms' }}>
              <div className="absolute w-72 h-72 bg-teal-200/40 rounded-full animate-breathe blur-xl"></div>
              <div className="absolute w-56 h-56 bg-purple-200/40 rounded-full animate-breathe animation-delay-2000 blur-lg"></div>
@@ -103,13 +117,22 @@ export default function Home() {
                <h3 className="text-xl font-bold text-gray-800">
                  {userName ? `You matter, ${userName}.` : "You matter."}
                </h3>
-               <p className="text-gray-500 mt-2 text-sm">Ambil napas dalam-dalam, dan hembuskan perlahan.</p>
+               <p className="text-gray-500 mt-2 text-sm">
+                 {lastMood ? `Terakhir kamu merasa ${lastMood.mood}.` : "Ambil napas dalam-dalam, dan hembuskan perlahan."}
+               </p>
+             </div>
+             
+             <div className="absolute top-10 right-10 bg-white/80 backdrop-blur p-3 rounded-2xl shadow-lg animate-bounce duration-[3000ms] text-orange-400">
+                 <Sun size={24} fill="currentColor" />
+             </div>
+             <div className="absolute bottom-10 left-10 bg-white/80 backdrop-blur p-3 rounded-2xl shadow-lg animate-bounce duration-[4000ms] text-blue-400">
+                 <CloudRain size={24} fill="currentColor" />
              </div>
           </div>
         </section>
 
-        {/* ================= WELLNESS BUDDY (Daily Goals) ================= */}
-        <section className="mb-24">
+        {/* ================= WELLNESS BUDDY ================= */}
+        <section className="mb-24 animate-fade-in-up" style={{ animationDelay: '300ms' }}>
           <div className="bg-indigo-600 rounded-[3rem] p-8 md:p-12 text-white relative overflow-hidden shadow-2xl">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-teal-400 opacity-20 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"></div>
@@ -133,80 +156,34 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ================= INTERACTIVE TOOLBOX HUB (PENGGANTI TUMPUKAN) ================= */}
-        <section className="mb-24 animate-fade-in-up">
-          <div className="text-center mb-10">
-             <h2 className="text-4xl font-black text-gray-800 mb-4">Apa yang kamu butuhkan?</h2>
-             <p className="text-gray-600 text-lg">Pilih alat bantu yang sesuai dengan kondisimu saat ini.</p>
+        {/* ================= FUN ZONE: POP-IT (SUDAH KEMBALI!) ================= */}
+        <section className="mb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center animate-fade-in-up">
+          
+          {/* Deskripsi (Kiri) */}
+          <div className="text-center lg:text-right order-2 lg:order-1 pr-0 lg:pr-10">
+             <div className="inline-block p-3 bg-teal-100 text-teal-600 rounded-2xl mb-4 shadow-sm">
+                <Gamepad2 size={32} />
+             </div>
+             <h2 className="text-4xl font-black text-gray-800 mb-6">
+               Butuh Istirahat Kilat?
+             </h2>
+             <p className="text-gray-600 text-lg mb-8 leading-relaxed">
+               Kadang yang kamu butuhkan hanyalah pengalihan sederhana. Mainkan game Pop-It ini sepuasnya, rasakan sensasi 'ceklik' yang menenangkan.
+             </p>
+             <div className="inline-block px-5 py-3 bg-teal-50 text-teal-700 border border-teal-200 rounded-xl text-sm font-bold">
+               🍬 Stress Relief Toy
+             </div>
           </div>
 
-          <div className="bg-white/40 backdrop-blur-xl rounded-[3rem] border border-white/60 shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[600px]">
-            
-            {/* SIDEBAR MENU (Desktop) / TOPBAR (Mobile) */}
-            <div className="md:w-1/3 p-6 md:p-8 bg-white/40 backdrop-blur border-b md:border-b-0 md:border-r border-white/50 flex flex-row md:flex-col gap-4 overflow-x-auto md:overflow-visible no-scrollbar">
-               {tabs.map((tab) => (
-                 <button
-                   key={tab.id}
-                   onClick={() => setActiveTab(tab.id)}
-                   className={`
-                     flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 text-left min-w-[200px] md:min-w-0
-                     ${activeTab === tab.id 
-                        ? "bg-white shadow-lg scale-105 border-l-4 border-teal-500" 
-                        : "hover:bg-white/50 text-gray-500 hover:text-gray-800"
-                     }
-                   `}
-                 >
-                   <div className={`p-3 rounded-full text-white shadow-md ${tab.color}`}>
-                      {tab.icon}
-                   </div>
-                   <div>
-                      <h4 className="font-bold text-gray-800">{tab.label}</h4>
-                      <p className="text-xs text-gray-500">{tab.desc}</p>
-                   </div>
-                 </button>
-               ))}
-            </div>
-
-            {/* CONTENT AREA */}
-            <div className="flex-1 p-6 md:p-12 bg-white/30 flex items-center justify-center relative">
-               
-               {/* Transisi Halus */}
-               <div className="w-full max-w-xl animate-fade-in-up key={activeTab}"> 
-                  {activeTab === "grounding" && (
-                    <div className="text-center">
-                       <h3 className="text-2xl font-bold mb-6 text-purple-700">Grounding Technique</h3>
-                       <GroundingExercise />
-                    </div>
-                  )}
-                  
-                  {activeTab === "sleep" && (
-                    <div className="text-center">
-                       <h3 className="text-2xl font-bold mb-6 text-indigo-700">Sleep Calculator</h3>
-                       <SleepCalculator />
-                    </div>
-                  )}
-
-                  {activeTab === "play" && (
-                    <div className="text-center">
-                       <h3 className="text-2xl font-bold mb-6 text-teal-700">Stress Relief Toy</h3>
-                       <PopItGame />
-                    </div>
-                  )}
-
-                  {activeTab === "letter" && (
-                    <div className="text-center">
-                       <h3 className="text-2xl font-bold mb-6 text-rose-700">Letter to Future Self</h3>
-                       <FutureLetter />
-                    </div>
-                  )}
-               </div>
-
-            </div>
+          {/* Game (Kanan) */}
+          <div className="order-1 lg:order-2 flex justify-center lg:justify-start">
+             <PopItGame />
           </div>
+
         </section>
 
         {/* ================= ARTICLES PREVIEW ================= */}
-        <section className="mb-24">
+        <section className="mb-24 animate-fade-in-up">
            <div className="flex justify-between items-end mb-8 px-2">
               <div>
                 <h2 className="text-3xl font-black text-gray-800">Learn & Grow</h2>
@@ -248,7 +225,7 @@ export default function Home() {
   );
 }
 
-// Component FeatureCard Kecil
+// Component FeatureCard
 function FeatureCard({ icon, title, desc, link, color }) {
   return (
     <Link 

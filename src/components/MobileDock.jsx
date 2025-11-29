@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Smile, Wind, BookOpen, Phone } from "lucide-react";
+import { Home, Smile, Grid, BookOpen, Phone } from "lucide-react";
 
 export default function MobileDock() {
   const pathname = usePathname();
@@ -9,7 +9,7 @@ export default function MobileDock() {
   const links = [
     { href: "/", icon: <Home size={22} />, label: "Home" },
     { href: "/mood", icon: <Smile size={22} />, label: "Mood" },
-    { href: "/breathing", icon: <Wind size={22} />, label: "Breathe" },
+    { href: "/toolbox", icon: <Grid size={22} />, label: "Tools" },
     { href: "/articles", icon: <BookOpen size={22} />, label: "Read" },
     { href: "/hotline", icon: <Phone size={22} />, label: "Help" },
   ];

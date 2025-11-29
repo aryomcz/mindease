@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Eye, Hand, Ear, Sparkles, Smile, ArrowRight, RefreshCcw } from "lucide-react";
 
 export default function GroundingExercise() {
-  const [step, setStep] = useState(0); // 0 = Intro, 1-5 = Steps, 6 = Finish
+  const [step, setStep] = useState(0); 
 
   const steps = [
     {
@@ -14,6 +14,7 @@ export default function GroundingExercise() {
       icon: <Eye size={48} className="text-teal-500" />,
       color: "bg-teal-50 border-teal-200 text-teal-800"
     },
+    // ... (data lain tetap sama)
     {
       id: 2,
       number: "4",
@@ -48,20 +49,16 @@ export default function GroundingExercise() {
     }
   ];
 
-  const handleNext = () => {
-    setStep(step + 1);
-  };
-
-  const handleReset = () => {
-    setStep(0);
-  };
+  const handleNext = () => setStep(step + 1);
+  const handleReset = () => setStep(0);
 
   return (
-    <div className="bg-white/70 backdrop-blur-xl p-8 rounded-[2rem] border border-white/60 shadow-xl max-w-lg mx-auto relative overflow-hidden min-h-[400px] flex flex-col justify-center transition-all hover:scale-[1.01]">
+    // PERBAIKAN: Hapus fixed height, ganti min-h-full agar fleksibel
+    <div className="bg-white/70 backdrop-blur-xl p-8 rounded-[2rem] border border-white/60 shadow-xl w-full mx-auto relative overflow-visible transition-all hover:scale-[1.01]">
       
       {/* STEP 0: INTRO */}
       {step === 0 && (
-        <div className="text-center animate-fade-in-up">
+        <div className="text-center animate-fade-in-up py-4">
           <div className="inline-block p-4 bg-teal-100 rounded-full text-teal-600 mb-6">
             <Sparkles size={32} />
           </div>
@@ -80,7 +77,7 @@ export default function GroundingExercise() {
 
       {/* STEP 1-5: EXERCISE */}
       {step > 0 && step <= 5 && (
-        <div className="text-center animate-fade-in-up" key={step}>
+        <div className="text-center animate-fade-in-up py-4" key={step}>
           <div className="flex justify-between items-center mb-8 text-sm font-bold text-gray-400">
              <span>Langkah {step} dari 5</span>
              <button onClick={handleReset} className="hover:text-rose-500"><RefreshCcw size={16}/></button>
@@ -97,7 +94,7 @@ export default function GroundingExercise() {
           <h3 className="text-2xl font-bold text-gray-800 mb-2">
             {steps[step-1].title}
           </h3>
-          <p className="text-gray-600 mb-8 text-lg min-h-[80px]">
+          <p className="text-gray-600 mb-8 text-lg min-h-[60px]">
             {steps[step-1].desc}
           </p>
 
@@ -105,20 +102,20 @@ export default function GroundingExercise() {
             onClick={handleNext}
             className="w-full py-3 border-2 border-gray-200 text-gray-600 rounded-xl font-bold hover:border-teal-500 hover:text-teal-600 hover:bg-teal-50 transition-all"
           >
-            Saya sudah menemukannya (Next)
+            Saya sudah menemukannya
           </button>
         </div>
       )}
 
       {/* STEP 6: FINISH */}
       {step === 6 && (
-        <div className="text-center animate-fade-in-up">
+        <div className="text-center animate-fade-in-up py-8">
           <div className="mx-auto w-24 h-24 bg-green-100 rounded-full flex items-center justify-center text-green-600 mb-6 animate-bounce">
             <Smile size={48} />
           </div>
           <h2 className="text-2xl font-black text-gray-800 mb-2">Kamu Hebat!</h2>
           <p className="text-gray-600 mb-8">
-            Semoga pikiranmu sekarang lebih tenang dan terkendali. Ulangi kapanpun kamu merasa cemas.
+            Semoga pikiranmu sekarang lebih tenang.
           </p>
           <button 
             onClick={handleReset}
@@ -129,9 +126,9 @@ export default function GroundingExercise() {
         </div>
       )}
       
-      {/* Progress Bar di Bawah */}
+      {/* Progress Bar */}
       {step > 0 && step <= 5 && (
-          <div className="absolute bottom-0 left-0 h-2 bg-gray-100 w-full">
+          <div className="absolute bottom-0 left-0 h-2 bg-gray-100 w-full overflow-hidden rounded-b-[2rem]">
               <div 
                 className="h-full bg-teal-500 transition-all duration-500" 
                 style={{ width: `${(step/5)*100}%` }}
