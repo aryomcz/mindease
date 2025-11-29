@@ -9,13 +9,17 @@ import PopItGame from "@/components/PopItGame";
 import WellnessBuddy from "@/components/WellnessBuddy";
 import WelcomeModal from "@/components/WelcomeModal";
 import { UserContext } from "@/context/UserContext";
+import ToolsCarousel from "@/components/ToolsCarousel";
 
 export default function Home() {
   const { userName, setUserName } = useContext(UserContext);
   const [greeting, setGreeting] = useState("Hello");
   const [lastMood, setLastMood] = useState(null);
+  const [mounted, setMounted] = useState(false);
+
 
   useEffect(() => {
+    setMounted(true)
     const hour = new Date().getHours();
     setGreeting(
       hour < 12 ? "Selamat Pagi" : hour < 18 ? "Selamat Siang" : "Selamat Malam"
@@ -28,7 +32,7 @@ export default function Home() {
     savedMoods.length && setLastMood(savedMoods.at(-1));
   }, []);
 
-
+  if (!mounted) return null;
   return (
     // PERUBAHAN DI SINI:
     // Saya hapus: 'bg-gradient-to-br from-indigo-50 ...'
@@ -99,8 +103,42 @@ export default function Home() {
                   <Smile size={20} /> Cek Mood
                 </Link>
               )}
-              <Link href="/breathing" className="flex items-center justify-center gap-2 px-8 py-4 bg-white/80 backdrop-blur text-gray-700 border border-white rounded-2xl font-bold shadow-sm hover:bg-white hover:text-teal-600 transition-all duration-300">
-                <Wind size={20} /> Latihan Napas
+              <Link
+                href="/breathing"
+                className="
+                group
+                flex items-center justify-center gap-2
+                px-8 py-4
+                bg-white/80 backdrop-blur
+                text-gray-700
+                border border-white rounded-2xl
+                font-bold shadow-sm
+                hover:bg-white hover:text-teal-600
+                transition-all duration-300
+              "
+              >
+                {/* Ikon Wind bergerak saat hover */}                {/* Ikon Wind bergerak saat hover */}
+                <Wind
+                  size={20}
+                  className="
+                  transition-transform duration-500 opacity-0
+                  group-hover:-translate-x-1 group-hover:opacity-100
+                  -translate-x-0.5    
+                "
+                />
+
+                {/* Teks dengan animasi opacity & gerakan */}
+                <span
+                  className="
+                  inline-block 
+                  transition-all duration-500
+                  opacity-60 -translate-x-2     /* Saat tidak di hover → dihisap */
+                  group-hover:opacity-100       /* Saat hover → jelas */
+                  group-hover:translate-x-1     /* Ditiup ke kanan */
+                "
+                >
+                  Latihan Napas
+                </span>
               </Link>
             </div>
           </div>
@@ -137,86 +175,11 @@ export default function Home() {
               </h2>
               <p className="text-gray-500 text-sm mt-1">Eksplorasi alat bantu untuk kesehatan mentalmu.</p>
             </div>
-            <div className="flex gap-1">
-              <div className="w-2 h-2 rounded-full bg-gray-800"></div>
-              <div className="w-2 h-2 rounded-full bg-gray-300"></div>
-              <div className="w-2 h-2 rounded-full bg-gray-300"></div>
-            </div>
           </div>
 
           <div className="flex gap-5 overflow-x-auto pb-8 -mx-6 px-6 snap-x scrollbar-hide">
 
-            {/* CARD 1: THE VOID */}
-            <Link href="/void" className="snap-center shrink-0 w-[280px] h-[320px] bg-slate-800 rounded-[2.5rem] p-7 relative overflow-hidden flex flex-col justify-between group transition-transform hover:scale-[1.02] shadow-xl shadow-slate-200">
-              <div className="relative z-10">
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-2xl font-black text-white leading-tight">The<br />Void</h3>
-                  <span className="bg-white/20 text-white text-[10px] font-bold px-2 py-1 rounded-lg backdrop-blur">+ NEW</span>
-                </div>
-                <p className="text-slate-400 text-xs leading-relaxed">Buang pikiran negatifmu ke dalam kehampaan digital. Lega seketika.</p>
-              </div>
-
-              <div className="relative z-10">
-                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-slate-900 font-bold group-hover:w-full transition-all duration-500 overflow-hidden">
-                  <span className="hidden group-hover:block mr-2 text-sm">Release Now</span>
-                  <ArrowRight size={20} />
-                </div>
-              </div>
-
-              {/* Decor Icon Big */}
-              <Trash2 className="absolute -bottom-6 -right-6 text-slate-700 opacity-50 rotate-12 group-hover:rotate-0 transition-transform duration-500" size={160} />
-            </Link>
-
-            {/* CARD 2: SLEEP CALCULATOR */}
-            <Link href="/toolbox?tool=sleep" className="snap-center shrink-0 w-[280px] h-[320px] bg-indigo-600 rounded-[2.5rem] p-7 relative overflow-hidden flex flex-col justify-between group transition-transform hover:scale-[1.02] shadow-xl shadow-indigo-200">
-              <div className="relative z-10">
-                <h3 className="text-2xl font-black text-white mb-2 leading-tight">Sleep<br />Cycle</h3>
-                <p className="text-indigo-200 text-xs leading-relaxed">Hitung waktu tidur ideal agar bangun segar tanpa pening.</p>
-              </div>
-
-              <div className="relative z-10">
-                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-indigo-600 font-bold group-hover:w-full transition-all duration-500 overflow-hidden">
-                  <span className="hidden group-hover:block mr-2 text-sm">Calculate</span>
-                  <ArrowRight size={20} />
-                </div>
-              </div>
-
-              <Moon className="absolute -bottom-4 -right-4 text-indigo-500 opacity-50 rotate-12 group-hover:rotate-0 transition-transform duration-500" size={150} />
-            </Link>
-
-            {/* CARD 3: GROUNDING */}
-            <Link href="/toolbox?tool=grounding" className="snap-center shrink-0 w-[280px] h-[320px] bg-[#C4D9C8] rounded-[2.5rem] p-7 relative overflow-hidden flex flex-col justify-between group transition-transform hover:scale-[1.02] shadow-xl shadow-green-100">
-              <div className="relative z-10">
-                <h3 className="text-2xl font-black text-[#2D4F34] mb-2 leading-tight">Panic<br />Relief</h3>
-                <p className="text-[#4A6B52] text-xs leading-relaxed">Teknik 5-4-3-2-1 untuk meredakan serangan cemas.</p>
-              </div>
-
-              <div className="relative z-10">
-                <div className="w-12 h-12 bg-[#2D4F34] rounded-full flex items-center justify-center text-[#C4D9C8] font-bold group-hover:w-full transition-all duration-500 overflow-hidden">
-                  <span className="hidden group-hover:block mr-2 text-sm">Start Now</span>
-                  <ArrowRight size={20} />
-                </div>
-              </div>
-
-              <Anchor className="absolute -bottom-6 -right-6 text-[#A5C2AA] opacity-60 rotate-12 group-hover:rotate-0 transition-transform duration-500" size={160} />
-            </Link>
-
-            {/* CARD 4: TIME CAPSULE */}
-            <Link href="/toolbox?tool=letter" className="snap-center shrink-0 w-[280px] h-[320px] bg-rose-400 rounded-[2.5rem] p-7 relative overflow-hidden flex flex-col justify-between group transition-transform hover:scale-[1.02] shadow-xl shadow-rose-200">
-              <div className="relative z-10">
-                <h3 className="text-2xl font-black text-white mb-2 leading-tight">Time<br />Capsule</h3>
-                <p className="text-rose-100 text-xs leading-relaxed">Kirim surat harapan untuk dirimu di masa depan.</p>
-              </div>
-
-              <div className="relative z-10">
-                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-rose-500 font-bold group-hover:w-full transition-all duration-500 overflow-hidden">
-                  <span className="hidden group-hover:block mr-2 text-sm">Write Letter</span>
-                  <ArrowRight size={20} />
-                </div>
-              </div>
-
-              <Mail className="absolute -bottom-6 -right-6 text-rose-300 opacity-60 rotate-12 group-hover:rotate-0 transition-transform duration-500" size={160} />
-            </Link>
+            <ToolsCarousel />
 
           </div>
         </section>
