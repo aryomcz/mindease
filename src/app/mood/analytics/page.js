@@ -111,7 +111,7 @@ export default function MoodAnalytics() {
                       <div key={d.label} className="flex items-center gap-2 text-xs font-bold text-gray-600 bg-white/40 p-2 rounded-lg border border-white/50 backdrop-blur-sm">
                         <span className="w-2.5 h-2.5 rounded-full shadow-sm" style={{ background: d.color }}></span>
                         <span className="flex-1">{d.label}</span>
-                        <span className="bg-white px-1.5 py-0.5 rounded text-gray-800 shadow-sm">{d.value}</span>
+                        <span className="bg-white px-1.5 py-0.5 rounded !text-gray-800 shadow-sm">{d.value}</span>
                       </div>
                     )
                   ))}

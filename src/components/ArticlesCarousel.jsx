@@ -91,23 +91,7 @@ export default function ArticlesCarousel() {
   return (
     <section className="mb-24 animate-fade-in-up">
       {/* HEADER */}
-      <div className="flex justify-between items-end mb-8 px-2">
-        <div>
-            <MotionWrapper animation="fadeInUp" duration={0.8}>
-          <h2 className="text-3xl font-black text-gray-800 flex items-center gap-2">
-            Learn & Grow <BookOpen className="text-rose-400 w-6 h-6" />
-          </h2>
-            </MotionWrapper>
-            <MotionWrapper animation="fadeInUp" duration={0.8} delay={0.2}>
-          <p className="text-gray-500 mt-1">Wawasan praktis untuk harimu.</p>
-            </MotionWrapper>
-        </div>
-        <MotionWrapper animation="fadeInUp" duration={0.8} delay={0.2}>
-        <Link href="/articles" className="text-teal-600 font-bold text-sm hover:underline flex items-center gap-1">
-          Lihat Semua <ArrowRight size={14} />
-        </Link>
-        </MotionWrapper>
-      </div>
+      
 
       {/* WRAP CAROUSEL + STAGGER */}
       <motion.div

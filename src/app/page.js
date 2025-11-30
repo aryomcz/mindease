@@ -1,10 +1,10 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect, useContext } from "react";
-import { ArrowRight, Wind, Smile, BookOpen, Heart, Sun, CloudRain, Gamepad2, Tag, Clock } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowRight, Wind, Smile, BookOpen, Heart, Sun, CloudRain, Gamepad2 } from "lucide-react";
 
-import { MotionWrapper, StaggerContainer } from "@/components/MotionWrapper";
+// Components
+import { MotionWrapper } from "@/components/MotionWrapper"; // Pastikan path ini benar sesuai file kamu
 import QuoteCard from "@/components/QuoteCard";
 import PopItGame from "@/components/PopItGame";
 import WellnessBuddy from "@/components/WellnessBuddy";
@@ -32,8 +32,6 @@ export default function Home() {
     savedName && setUserName(savedName);
     savedMoods.length && setLastMood(savedMoods.at(-1));
   }, []);
-  // MOCK DATA: Artikel Terbaru (Nanti bisa diganti fetch dari database/CMS)
-
 
   if (!mounted) return null;
 
@@ -44,16 +42,17 @@ export default function Home() {
       <div className="fixed top-0 -left-20 w-96 h-96 bg-teal-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob pointer-events-none"></div>
       <div className="fixed top-20 -right-20 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000 pointer-events-none"></div>
 
-      <div className="max-w-6xl mx-auto px-6 pt-32 pb-20 relative z-10">
+      {/* Container utama: Padding disesuaikan biar lega di HP */}
+      <div className="max-w-6xl mx-auto px-4 md:px-6 pt-24 md:pt-32 pb-20 relative z-10">
 
         {/* ================= HERO SECTION ================= */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16 md:mb-24">
 
           <div className="text-center lg:text-left space-y-6">
 
             {/* BADGE */}
             <MotionWrapper animation="slideInDown" duration={0.6} delay={0.3}>
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/60 backdrop-blur border border-white/50 shadow-sm text-indigo-600 text-sm font-bold mb-2">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/60 backdrop-blur border border-white/50 shadow-sm text-indigo-600 text-xs md:text-sm font-bold mb-2">
                 <span className="relative flex h-3 w-3">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
@@ -62,9 +61,9 @@ export default function Home() {
               </div>
             </MotionWrapper>
 
-            {/* MAIN TITLE */}
+            {/* MAIN TITLE - Ukuran font responsif (4xl di HP, 7xl di Desktop) */}
             <MotionWrapper animation="fadeInUp" duration={0.8} delay={0.3}>
-              <h1 className="text-5xl md:text-7xl font-black text-gray-900 leading-tight tracking-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-gray-900 leading-tight tracking-tight">
                 {userName ? (
                   <>
                     {greeting}, <br />
@@ -85,7 +84,7 @@ export default function Home() {
 
             {/* SUBTITLE */}
             <MotionWrapper animation="fadeInUp" duration={0.8} delay={0.4}>
-              <p className="text-xl text-gray-600 leading-relaxed max-w-lg mx-auto lg:mx-0">
+              <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-lg mx-auto lg:mx-0">
                 LuMind adalah ruang digital untuk merawat pikiranmu. Lacak emosi, atur napas, dan temukan ketenangan.
               </p>
             </MotionWrapper>
@@ -125,11 +124,11 @@ export default function Home() {
           </div>
 
           {/* HERO IMAGE */}
-          <div className="relative flex justify-center items-center h-[400px]">
+          <div className="relative flex justify-center items-center h-[300px] md:h-[400px]">
             <MotionWrapper animation="zoomIn" duration={0.8} delay={0.5}>
-              <div className="absolute w-72 h-72 bg-teal-200/40 rounded-full animate-breathe blur-xl"></div>
-              <div className="absolute w-56 h-56 bg-purple-200/40 rounded-full animate-breathe animation-delay-2000 blur-lg"></div>
-              <div className="relative z-20 bg-white/70 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/50 text-center max-w-xs transform hover:scale-105 transition duration-500 cursor-pointer">
+              <div className="absolute w-60 h-60 md:w-72 md:h-72 bg-teal-200/40 rounded-full animate-breathe blur-xl"></div>
+              <div className="absolute w-44 h-44 md:w-56 md:h-56 bg-purple-200/40 rounded-full animate-breathe animation-delay-2000 blur-lg"></div>
+              <div className="relative z-20 bg-white/70 backdrop-blur-xl p-6 md:p-8 rounded-3xl shadow-2xl border border-white/50 text-center max-w-xs transform hover:scale-105 transition duration-500 cursor-pointer">
                 <div className="bg-gradient-to-tr from-rose-100 to-orange-100 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-inner">
                   <Heart className="text-rose-500 fill-rose-500 animate-pulse" size={32} />
                 </div>
@@ -151,23 +150,23 @@ export default function Home() {
         </section>
 
         {/* ================= FEATURES SECTION ================= */}
-        <section className="mb-24">
+        <section className="mb-16 md:mb-24">
           <MotionWrapper animation="fadeInUp" duration={0.8} delay={0.2}>
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-black text-gray-800 flex items-center justify-center gap-2">
+            <div className="text-center mb-8 md:mb-12">
+              <h2 className="text-2xl md:text-3xl font-black text-gray-800 flex items-center justify-center gap-2">
                 Discover Tools <span className="text-teal-500 animate-pulse">●</span>
               </h2>
             </div>
           </MotionWrapper>
-          <div className="flex gap-5 overflow-x-auto pb-8 -mx-6 px-2 lg:px-6 snap-x scrollbar-hide">
+          <div className="flex gap-4 md:gap-5 overflow-x-auto pb-8 -mx-4 px-4 md:-mx-6 md:px-6 snap-x scrollbar-hide">
             <ToolsCarousel />
           </div>
         </section>
 
         {/* ================= WELLNESS BUDDY ================= */}
-        <section className="mb-24">
+        <section className="mb-16 md:mb-24">
           <MotionWrapper animation="fadeInUp" duration={0.8}>
-            <div className="bg-indigo-600 rounded-[3rem] p-8 md:p-12 text-white relative overflow-hidden shadow-2xl">
+            <div className="bg-indigo-600 rounded-[2.5rem] md:rounded-[3rem] p-8 md:p-12 text-white relative overflow-hidden shadow-2xl">
               <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-teal-400 opacity-20 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"></div>
 
@@ -194,13 +193,13 @@ export default function Home() {
         </section>
 
         {/* ================= POP IT GAME ================= */}
-        <section className="mb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <section className="mb-16 md:mb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <MotionWrapper animation="slideInLeft" duration={0.8}>
             <div className="text-center lg:text-right pr-0 lg:pr-10">
               <div className="inline-block p-3 bg-teal-100 text-teal-600 rounded-2xl mb-4 shadow-sm">
                 <Gamepad2 size={32} />
               </div>
-              <h2 className="text-4xl font-black text-gray-800 mb-6">
+              <h2 className="text-3xl md:text-4xl font-black text-gray-800 mb-6">
                 Butuh Istirahat Kilat?
               </h2>
               <p className="text-gray-600 text-lg mb-8 leading-relaxed">
@@ -218,7 +217,38 @@ export default function Home() {
           </MotionWrapper>
         </section>
 
-        <ArticlesCarousel />
+        {/* ================= ARTICLES PREVIEW (PERBAIKAN LAYOUT DISINI) ================= */}
+        {/*
+           Perhatikan: Saya membuat struktur Header di sini agar responsif.
+           Jika ArticlesCarousel kamu sudah punya header di dalamnya,
+           sebaiknya header di dalam component itu di-hide atau dihapus,
+           dan gunakan yang ini agar rapi.
+        */}
+        <section className="mb-16 md:mb-24">
+          <MotionWrapper animation="fadeInUp" duration={0.8}>
+            {/* Header Flex: Column di HP, Row di Tablet ke atas */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 md:mb-8 px-2 gap-4 md:gap-0">
+              <div>
+                <h2 className="text-3xl font-black text-gray-800 flex items-center gap-2">
+                  Learn & Grow <BookOpen className="text-rose-400 w-6 h-6 hidden md:block" />
+                </h2>
+                <p className="text-gray-500 mt-1">Wawasan praktis untuk harimu.</p>
+              </div>
+
+              {/* Tombol Lihat Semua yang rapi di mobile */}
+              <Link
+                href="/articles"
+                className="group flex items-center gap-2 px-4 py-2 bg-teal-50 text-teal-700 rounded-full font-bold text-sm hover:bg-teal-100 transition-all self-start md:self-auto"
+              >
+                Lihat Semua
+                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+
+            {/* Carousel Artikel */}
+            <ArticlesCarousel />
+          </MotionWrapper>
+        </section>
 
         {/* ================= QUOTE ================= */}
         <div className="mb-10">
