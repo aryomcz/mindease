@@ -1,22 +1,51 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect, useContext } from "react";
-import { ArrowRight, Wind, Smile, BookOpen, Heart, Sun, CloudRain, Gamepad2, Moon, Anchor, Trash2, Mail } from "lucide-react";
+import { ArrowRight, Wind, Smile, BookOpen, Heart, Sun, CloudRain, Gamepad2, Tag, Clock } from "lucide-react";
 
 // Components
 import QuoteCard from "@/components/QuoteCard";
 import PopItGame from "@/components/PopItGame";
 import WellnessBuddy from "@/components/WellnessBuddy";
-import WelcomeModal from "@/components/WelcomeModal";
 import { UserContext } from "@/context/UserContext";
 import ToolsCarousel from "@/components/ToolsCarousel";
+
+// MOCK DATA: Artikel Terbaru (Nanti bisa diganti fetch dari database/CMS)
+const recentArticles = [
+  {
+    id: 1,
+    title: "Mengapa 'Healing' itu Penting?",
+    category: "Self-Care",
+    readTime: "3 min",
+    desc: "Penjelasan ilmiah bagaimana istirahat sejenak bisa meningkatkan produktivitas dan menjaga kewarasan.",
+    color: "bg-teal-100 text-teal-700",
+    link: "/articles/healing-penting" // Ganti sesuai slug artikel nanti
+  },
+  {
+    id: 2,
+    title: "Teknik Grounding 5-4-3-2-1",
+    category: "Anxiety",
+    readTime: "5 min",
+    desc: "Cara cepat dan praktis meredakan serangan panik atau cemas berlebih menggunakan lima indra tubuhmu.",
+    color: "bg-rose-100 text-rose-700",
+    link: "/articles/teknik-grounding"
+  },
+  {
+    id: 3,
+    title: "Digital Detox Sederhana",
+    category: "Lifestyle",
+    readTime: "4 min",
+    desc: "Tips mengurangi screen time tanpa merasa tertinggal (FOMO) demi kesehatan mental yang lebih baik.",
+    color: "bg-indigo-100 text-indigo-700",
+    link: "/articles/digital-detox"
+  }
+];
 
 export default function Home() {
   const { userName, setUserName } = useContext(UserContext);
   const [greeting, setGreeting] = useState("Hello");
   const [lastMood, setLastMood] = useState(null);
   const [mounted, setMounted] = useState(false);
-
 
   useEffect(() => {
     setMounted(true)
@@ -34,21 +63,13 @@ export default function Home() {
 
   if (!mounted) return null;
   return (
-    // PERUBAHAN DI SINI:
-    // Saya hapus: 'bg-gradient-to-br from-indigo-50 ...'
-    // Saya ganti jadi: 'w-full overflow-hidden text-gray-800 relative min-h-screen'
-    // Supaya background dinamis dari layout.js bisa terlihat
     <div className="w-full overflow-hidden text-gray-800 relative min-h-screen">
 
       {/* BACKGROUND DECORATION (Blobs) */}
-      {/* Biarkan blobs ini agar tetap ada hiasan saat mode 'Default' */}
       <div className="fixed top-0 -left-20 w-96 h-96 bg-teal-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob pointer-events-none"></div>
       <div className="fixed top-20 -right-20 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000 pointer-events-none"></div>
 
       <div className="max-w-6xl mx-auto px-6 pt-32 pb-20 relative z-10">
-
-        {/* ... (KONTEN HERO SECTION DAN LAINNYA TETAP SAMA SEPERTI SEBELUMNYA) ... */}
-        {/* Langsung copy paste isinya dari kode sebelumnya, tidak ada perubahan logika di dalam sini */}
 
         {/* ================= HERO SECTION ================= */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
@@ -81,7 +102,7 @@ export default function Home() {
             </h1>
 
             <p className="text-xl text-gray-600 leading-relaxed max-w-lg mx-auto lg:mx-0">
-              MindEase adalah ruang digital untuk merawat pikiranmu. Lacak emosi, atur napas, dan temukan ketenangan.
+              LuMind adalah ruang digital untuk merawat pikiranmu. Lacak emosi, atur napas, dan temukan ketenangan.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-6">
@@ -94,7 +115,7 @@ export default function Home() {
                     <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">Last Check-in</p>
                     <p className="text-lg font-black text-gray-800">{lastMood.mood}</p>
                   </div>
-                  <Link href="/mood" className="ml-2 p-2 bg-gray-100 hover:bg-teal-100 hover:text-teal-600 rounded-full transition-colors" title="Update Mood">
+                  <Link href="/mood" className="ml-2 p-2 bg-black-100 hover:bg-teal-100 hover:text-teal-600 rounded-full transition-colors" title="Update Mood">
                     <ArrowRight size={16} />
                   </Link>
                 </div>
@@ -105,38 +126,10 @@ export default function Home() {
               )}
               <Link
                 href="/breathing"
-                className="
-                group
-                flex items-center justify-center gap-2
-                px-8 py-4
-                bg-white/80 backdrop-blur
-                text-gray-700
-                border border-white rounded-2xl
-                font-bold shadow-sm
-                hover:bg-white hover:text-teal-600
-                transition-all duration-300
-              "
+                className="group flex items-center justify-center gap-2 px-8 py-4 bg-white/80 backdrop-blur text-gray-700 border border-white rounded-2xl font-bold shadow-sm hover:bg-white hover:text-teal-600 transition-all duration-300"
               >
-                {/* Ikon Wind bergerak saat hover */}                {/* Ikon Wind bergerak saat hover */}
-                <Wind
-                  size={20}
-                  className="
-                  transition-transform duration-500 opacity-0
-                  group-hover:-translate-x-1 group-hover:opacity-100
-                  -translate-x-0.5    
-                "
-                />
-
-                {/* Teks dengan animasi opacity & gerakan */}
-                <span
-                  className="
-                  inline-block 
-                  transition-all duration-500
-                  opacity-60 -translate-x-2     /* Saat tidak di hover → dihisap */
-                  group-hover:opacity-100       /* Saat hover → jelas */
-                  group-hover:translate-x-1     /* Ditiup ke kanan */
-                "
-                >
+                <Wind size={20} className="transition-transform duration-500 opacity-0 group-hover:-translate-x-1 group-hover:opacity-100 -translate-x-0.5" />
+                <span className="inline-block transition-all duration-500 opacity-60 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-1">
                   Latihan Napas
                 </span>
               </Link>
@@ -166,7 +159,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ================= NEW: DISCOVER TOOLS (HORIZONTAL SCROLL) ================= */}
+        {/* ================= DISCOVER TOOLS ================= */}
         <section className="mb-24 animate-fade-in-up" style={{ animationDelay: '300ms' }}>
           <div className="flex justify-between items-end mb-6 px-2">
             <div>
@@ -176,11 +169,8 @@ export default function Home() {
               <p className="text-gray-500 text-sm mt-1">Eksplorasi alat bantu untuk kesehatan mentalmu.</p>
             </div>
           </div>
-
           <div className="flex gap-5 overflow-x-auto pb-8 -mx-6 px-6 snap-x scrollbar-hide">
-
             <ToolsCarousel />
-
           </div>
         </section>
 
@@ -230,36 +220,52 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ================= ARTICLES PREVIEW ================= */}
+        {/* ================= ARTICLES PREVIEW (UPDATED) ================= */}
         <section className="mb-24 animate-fade-in-up">
           <div className="flex justify-between items-end mb-8 px-2">
             <div>
-              <h2 className="text-3xl font-black text-gray-800">Learn & Grow</h2>
-              <p className="text-gray-500 mt-1">Artikel terbaru untuk wawasanmu.</p>
+              <h2 className="text-3xl font-black text-gray-800 flex items-center gap-2">
+                Learn & Grow <BookOpen className="text-rose-400 w-6 h-6" />
+              </h2>
+              <p className="text-gray-500 mt-1">Wawasan praktis untuk harimu.</p>
             </div>
-            <Link href="/articles" className="text-teal-600 font-bold hover:underline flex items-center gap-1">
-              Lihat Semua <ArrowRight size={16} />
+            <Link href="/articles" className="text-teal-600 font-bold text-sm hover:underline flex items-center gap-1">
+              Lihat Semua <ArrowRight size={14} />
             </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <FeatureCard
-              icon={<BookOpen className="w-8 h-8 text-rose-500" />}
-              title="Artikel Pilihan"
-              desc="Tips psikologi praktis untuk hadapi hari-hari berat."
-              link="/articles"
-              color="hover:border-rose-400"
-            />
-            <div className="md:col-span-2 bg-gradient-to-r from-teal-500 to-indigo-600 rounded-[2.5rem] p-8 text-white flex flex-col justify-center relative overflow-hidden shadow-lg group cursor-pointer hover:scale-[1.01] transition-transform">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
-              <h3 className="text-2xl font-bold mb-2 relative z-10">Mengapa "Healing" itu Penting?</h3>
-              <p className="text-teal-100 mb-6 max-w-lg relative z-10">
-                Simak penjelasan ilmiah tentang bagaimana istirahat sejenak bisa meningkatkan produktivitas.
-              </p>
-              <Link href="/articles" className="inline-flex items-center gap-2 bg-white text-teal-700 px-5 py-3 rounded-xl font-bold w-fit shadow-md group-hover:bg-teal-50 transition">
-                Baca Artikel <ArrowRight size={18} />
+            {recentArticles.map((article) => (
+              <Link 
+                href={article.link || "/articles"} 
+                key={article.id}
+                className="group flex flex-col bg-white/70 backdrop-blur-xl border border-white/60 p-6 rounded-[2rem] shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative overflow-hidden h-full"
+              >
+                {/* Decorative background blob on hover */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-transparent to-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-bl-full pointer-events-none"></div>
+
+                <div className="flex justify-between items-start mb-4">
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold ${article.color}`}>
+                    {article.category}
+                  </span>
+                  <div className="flex items-center text-gray-400 text-xs font-medium">
+                    <Clock size={12} className="mr-1" /> {article.readTime}
+                  </div>
+                </div>
+
+                <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-teal-600 transition-colors line-clamp-2">
+                  {article.title}
+                </h3>
+                
+                <p className="text-gray-500 text-sm leading-relaxed mb-6 line-clamp-3 flex-grow">
+                  {article.desc}
+                </p>
+
+                <div className="flex items-center text-sm font-bold text-teal-600 mt-auto">
+                  Baca Artikel <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
               </Link>
-            </div>
+            ))}
           </div>
         </section>
 
@@ -270,27 +276,5 @@ export default function Home() {
 
       </div>
     </div>
-  );
-}
-
-// Component FeatureCard
-function FeatureCard({ icon, title, desc, link, color }) {
-  return (
-    <Link
-      href={link}
-      className={`group bg-white/70 backdrop-blur-md p-8 rounded-[2.5rem] shadow-sm border-2 border-transparent ${color} hover:shadow-xl hover:bg-white hover:-translate-y-2 transition-all duration-300 relative overflow-hidden flex flex-col h-full justify-between`}
-    >
-      <div>
-        <div className="mb-6 bg-white w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-300">
-          {icon}
-        </div>
-        <h3 className="text-xl font-bold text-gray-800 mb-3">{title}</h3>
-        <p className="text-gray-600 text-sm leading-relaxed mb-4">{desc}</p>
-      </div>
-
-      <div className="flex items-center text-sm font-bold text-gray-400 group-hover:text-gray-900 transition-colors">
-        Buka Library <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-      </div>
-    </Link>
   );
 }
