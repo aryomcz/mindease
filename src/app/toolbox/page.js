@@ -1,177 +1,237 @@
 "use client";
 import { useState, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
-import { Wind, Moon, Anchor, Mail, ArrowLeft, Trash2 } from "lucide-react";
+import { createPortal } from "react-dom";
+import { useSearchParams, useRouter } from "next/navigation";
+import { Wind, Moon, Anchor, Mail, ArrowRight, Trash2, X } from "lucide-react";
 import Link from "next/link";
 
+// Components
 import SleepCalculator from "@/components/SleepCalculator";
 import GroundingExercise from "@/components/GroundingExercise";
 import FutureLetter from "@/components/FutureLetter";
-// Hapus import TheVoid karena sudah pindah halaman
 
-function ToolboxContent() {
-  const searchParams = useSearchParams();
-  const initialTab = searchParams.get("tool") || "grounding";
-  const [activeTab, setActiveTab] = useState(initialTab);
+// --- KOMPONEN MODAL (POPUP) DENGAN PORTAL ---
+function ToolModal({ tool, onClose }) {
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const toolParam = searchParams.get("tool");
-    if (toolParam && toolParam !== "void") { // Jangan set activeTab ke void, karena void itu link
-      setActiveTab(toolParam);
+    setMounted(true);
+    if (tool) {
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [tool]);
+
+  if (!tool || !mounted) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4">
+      
+      {/* Overlay Gelap */}
+      <div 
+        className="absolute inset-0 bg-black/80 backdrop-blur-md animate-fade-in" 
+        onClick={onClose} 
+      ></div>
+
+      {/* Konten Modal - SELALU PUTIH (Agar input form terbaca jelas) */}
+      <div className="bg-white w-full max-w-3xl max-h-[85vh] overflow-y-auto rounded-[2.5rem] p-6 md:p-8 relative shadow-2xl animate-scale-up z-10 custom-scrollbar border-4 border-white">
+        
+        {/* Header Modal */}
+        <div className="flex justify-between items-center mb-6 border-b border-gray-100 pb-4 sticky top-0 bg-white z-20">
+           <div className="flex items-center gap-4">
+              <div className={`p-3 rounded-2xl text-white shadow-lg bg-gradient-to-br ${tool.color}`}>
+                 {tool.icon}
+              </div>
+              <div>
+                 {/* Paksa Teks Hitam di dalam Modal (karena bg-nya putih) */}
+                 <h2 className="text-2xl font-black !text-gray-900 leading-none">{tool.label}</h2>
+                 <p className="text-sm !text-gray-500 mt-1">{tool.desc}</p>
+              </div>
+           </div>
+           
+           <button 
+             onClick={onClose} 
+             className="p-3 bg-gray-100 hover:bg-rose-100 !text-gray-500 hover:!text-rose-500 rounded-full transition-colors cursor-pointer"
+           >
+              <X size={24} />
+           </button>
+        </div>
+
+        {/* Isi Fitur - Paksa Teks Hitam */}
+        <div className="!text-gray-800 modal-content-reset">
+           {tool.component}
+        </div>
+
+      </div>
+    </div>,
+    document.body
+  );
+}
+
+// --- KONTEN UTAMA TOOLBOX ---
+function ToolboxContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const [selectedTool, setSelectedTool] = useState(null);
+
+  useEffect(() => {
+    const toolId = searchParams.get("tool");
+    if (toolId) {
+       const tool = tools.find(t => t.id === toolId);
+       if (tool && !tool.isLink) {
+          setSelectedTool(tool);
+       }
     }
   }, [searchParams]);
 
+  const handleClose = () => {
+    setSelectedTool(null);
+    router.push("/toolbox", { scroll: false });
+  };
+
   const tools = [
-    {
-      id: "grounding",
-      label: "Grounding",
-      icon: <Anchor size={24} />,
+    { 
+      id: "grounding", 
+      label: "Grounding", 
+      icon: <Anchor size={40}/>, 
       color: "from-purple-500 to-indigo-600",
-      desc: "Teknik 5-4-3-2-1 untuk redakan panik."
+      bgCard: "bg-indigo-50",
+      desc: "Teknik 5-4-3-2-1 untuk meredakan serangan panik.",
+      component: <GroundingExercise />,
+      isLink: false
     },
-    {
-      id: "sleep",
-      label: "Sleep Calc",
-      icon: <Moon size={24} />,
-      color: "from-indigo-500 to-blue-600",
-      desc: "Hitung siklus tidur 90 menit."
+    { 
+      id: "sleep", 
+      label: "Sleep Calc", 
+      icon: <Moon size={40}/>, 
+      color: "from-blue-500 to-cyan-600",
+      bgCard: "bg-blue-50",
+      desc: "Hitung siklus tidur agar bangun segar tanpa pening.",
+      component: <SleepCalculator />,
+      isLink: false
     },
-    {
-      id: "void",
-      label: "The Void",
-      icon: <Trash2 size={24} />,
+    { 
+      id: "letter", 
+      label: "Time Capsule", 
+      icon: <Mail size={40}/>, 
+      color: "from-rose-400 to-pink-500",
+      bgCard: "bg-rose-50",
+      desc: "Kirim pesan harapan untuk dirimu di masa depan.",
+      component: <FutureLetter />,
+      isLink: false
+    },
+    { 
+      id: "void", 
+      label: "The Void", 
+      icon: <Trash2 size={40}/>, 
       color: "from-slate-700 to-black",
-      desc: "Buang pikiran negatifmu.",
-      isLink: true, // <--- Ini Link ke halaman baru
+      bgCard: "bg-slate-200",
+      desc: "Ruang hampa untuk membuang pikiran negatif.",
+      isLink: true,
       href: "/void"
     },
-    {
-      id: "letter",
-      label: "Time Capsule",
-      icon: <Mail size={24} />,
-      color: "from-rose-400 to-pink-500",
-      desc: "Kirim pesan ke masa depan."
-    },
-    {
-      id: "breathe",
-      label: "Breathing",
-      icon: <Wind size={24} />,
-      color: "from-cyan-400 to-blue-500",
-      desc: "Latihan napas terpandu.",
-      isLink: true,
-      href: "/breathing"
+    { 
+        id: "breathe", 
+        label: "Breathing", 
+        icon: <Wind size={40}/>, 
+        color: "from-teal-400 to-emerald-500",
+        bgCard: "bg-teal-50",
+        desc: "Latihan napas terpandu untuk relaksasi instan.",
+        isLink: true,
+        href: "/breathing"
     },
   ];
 
   return (
-    <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8">
-      {/* SIDEBAR MENU */}
-      <div className="lg:col-span-3 flex flex-row lg:flex-col gap-4 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 scrollbar-hide">
-        {tools.map((tool) => (
-          tool.isLink ? (
-            <Link
-              key={tool.id}
-              href={tool.href}
-              className="group flex lg:flex-col items-center lg:items-start gap-4 p-5 rounded-3xl bg-white/40 border border-white/60 hover:bg-white/80 transition-all hover:scale-105 min-w-[220px] lg:min-w-0 shadow-sm hover:shadow-md glass-card cursor-pointer"
+    <>
+      <div className="space-y-8 pb-32 relative"> 
+         {tools.map((tool, index) => (
+            <div 
+                key={tool.id} 
+                className="sticky top-28 transition-all duration-500" 
+                style={{ zIndex: index + 1 }}
             >
-              <div className={`p-3 rounded-2xl text-white shadow-lg bg-gradient-to-br ${tool.color} group-hover:rotate-6 transition-transform`}>
-                {tool.icon}
-              </div>
-              <div>
-                <h3 className="font-bold text-gray-800">{tool.label}</h3>
-                <p className="text-xs text-gray-500 hidden lg:block">{tool.desc}</p>
-              </div>
-              <ArrowLeft size={16} className="ml-auto lg:hidden rotate-180 text-gray-400" />
-            </Link>
-          ) : (
-            <button
-              key={tool.id}
-              onClick={() => setActiveTab(tool.id)}
-              className={`
-                        group flex lg:flex-col items-center lg:items-start gap-4 p-5 rounded-3xl border transition-all text-left min-w-[220px] lg:min-w-0 relative overflow-hidden glass-card cursor-pointer
-                        ${activeTab === tool.id
-                  ? "bg-white shadow-xl border-white scale-105 z-10 ring-4 ring-white/30"
-                  : "bg-white/40 border-white/60 hover:bg-white/60 hover:scale-[1.02]"
-                }
-                    `}
-            >
-              {activeTab === tool.id && (
-                <div className={`absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b ${tool.color}`}></div>
-              )}
-              <div className={`p-3 rounded-2xl text-white shadow-lg bg-gradient-to-br ${tool.color} ${activeTab === tool.id ? 'animate-bounce-slow' : ''}`}>
-                {tool.icon}
-              </div>
-              <div>
-                <h3 className={`font-bold ${activeTab === tool.id ? 'text-gray-900' : 'text-gray-600'}`}>{tool.label}</h3>
-                <p className="text-xs text-gray-500 hidden lg:block">{tool.desc}</p>
-              </div>
-            </button>
-          )
-        ))}
+                {tool.isLink ? (
+                    <Link href={tool.href} className="block group">
+                        <ToolCardUI tool={tool} index={index} />
+                    </Link>
+                ) : (
+                    <div onClick={() => setSelectedTool(tool)} className="cursor-pointer group">
+                        <ToolCardUI tool={tool} index={index} />
+                    </div>
+                )}
+            </div>
+         ))}
       </div>
 
-      {/* CONTENT AREA */}
-      <div className="lg:col-span-9">
-        <div className="bg-white/50 backdrop-blur-2xl rounded-[3rem] border border-white/60 shadow-2xl p-6 md:p-12 min-h-[600px] transition-all duration-500 flex flex-col justify-center glass-panel">
-
-          <div className="animate-fade-in-up key={activeTab} w-full">
-
-            {activeTab === "grounding" && (
-              <div className="max-w-2xl mx-auto w-full">
-                <div className="flex items-center gap-3 mb-8 justify-center lg:justify-start">
-                  <div className="p-2 bg-purple-100 text-purple-600 rounded-lg"><Anchor /></div>
-                  <h2 className="text-2xl font-black text-gray-800">Grounding Technique</h2>
-                </div>
-                <GroundingExercise />
-              </div>
-            )}
-
-            {activeTab === "sleep" && (
-              <div className="max-w-xl mx-auto w-full text-center py-4">
-                <div className="inline-flex items-center gap-2 mb-6 px-4 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm font-bold">
-                  <Moon size={16} /> Sleep Hygiene
-                </div>
-                <h2 className="text-3xl font-black text-gray-800 mb-8">Kalkulator Tidur</h2>
-                <SleepCalculator />
-              </div>
-            )}
-
-            {activeTab === "letter" && (
-              <div className="max-w-3xl mx-auto w-full py-4">
-                <div className="text-center mb-10">
-                  <h2 className="text-3xl font-black text-gray-800">Time Capsule</h2>
-                  <p className="text-gray-500">Kirim harapan untuk dirimu di masa depan.</p>
-                </div>
-                <FutureLetter />
-              </div>
-            )}
-
-          </div>
-        </div>
-      </div>
-    </div>
+      <ToolModal tool={selectedTool} onClose={handleClose} />
+    </>
   );
+}
+
+// --- KOMPONEN KARTU (ADAPTIF) ---
+function ToolCardUI({ tool, index }) {
+    return (
+        // Gunakan 'glass-panel' agar backgroundnya otomatis berubah (Putih/Gelap Transparan)
+        // HAPUS tanda seru (!) pada bg-white agar bisa di-override oleh dark mode
+        <div className={`
+            glass-panel relative overflow-hidden rounded-[3rem] p-8 md:p-12 shadow-xl transition-all duration-500 group-hover:-translate-y-2 border-4 border-white/50
+            bg-white/80 backdrop-blur-md 
+        `}>
+            {/* Gradient Blob Decoration */}
+            <div className={`absolute -right-20 -top-20 w-80 h-80 rounded-full bg-gradient-to-br ${tool.color} opacity-20 blur-3xl group-hover:scale-125 transition-transform duration-700`}></div>
+
+            <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div className="flex items-center gap-6">
+                    {/* Nomor Urut */}
+                    
+                    <div>
+                        <h3 className="text-3xl md:text-5xl font-black text-gray-900 mb-2 group-hover:text-teal-600 transition-colors">
+                            {tool.label}
+                        </h3>
+                        <p className="text-gray-600 text-lg max-w-lg leading-relaxed font-medium">
+                            {tool.desc}
+                        </p>
+                    </div>
+                </div>
+
+                <div className="flex flex-col items-end gap-4 mt-4 md:mt-0">
+                    <div className={`w-20 h-20 md:w-24 md:h-24 rounded-[2rem] flex items-center justify-center text-white shadow-xl bg-gradient-to-br ${tool.color} group-hover:rotate-6 transition-transform duration-500`}>
+                        {tool.icon}
+                    </div>
+                    {/* Tombol Buka Fitur */}
+                    <div className="glass-card px-6 py-2 rounded-full text-sm font-bold text-gray-800 shadow-sm group-hover:bg-teal-600 group-hover:text-white transition-colors flex items-center gap-2 border border-gray-100/50">
+                        Buka Fitur <ArrowRight size={16}/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default function ToolboxPage() {
   return (
-    // PERBAIKAN: Hapus bg-gradient agar transparan
     <div className="w-full relative overflow-x-hidden min-h-screen">
+      
+      {/* Background Transparan (Agar Ambience Terlihat) */}
+      <div className="fixed top-0 left-0 w-full h-full -z-10 bg-transparent"></div>
 
-      {/* Background Decor (Hanya hiasan di mode default) */}
-      <div className="fixed top-0 right-0 w-[600px] h-[600px] bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob pointer-events-none"></div>
-      <div className="fixed bottom-0 left-0 w-[600px] h-[600px] bg-teal-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000 pointer-events-none"></div>
-
-      <div className="max-w-7xl mx-auto px-4 pt-32 pb-32 relative z-10 flex flex-col">
-        <div className="text-center mb-12 animate-fade-in-down">
-          <h1 className="text-4xl md:text-5xl font-black text-gray-800 text-glow tracking-tight">
-            Wellness <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-indigo-600">Toolbox</span>
-          </h1>
-          <p className="text-gray-500 mt-2 font-medium">Pilih alat bantu untuk menenangkan pikiranmu.</p>
+      <div className="max-w-5xl mx-auto px-6 pt-36 relative z-10 flex flex-col">
+        
+        {/* HEADER */}
+        <div className="mb-10 animate-fade-in-down">
+           <h1 className="text-6xl md:text-8xl font-black text-gray-900 tracking-tighter mb-4">
+             Toolbox<span className="text-teal-500">.</span>
+           </h1>
+           <p className="text-xl text-gray-600 max-w-lg leading-relaxed font-medium">
+             Kumpulan alat bantu digital untuk menenangkan pikiran, mengatur tidur, dan melepaskan emosi.
+           </p>
         </div>
 
-        <Suspense fallback={<div className="text-center py-20">Loading Tools...</div>}>
-          <ToolboxContent />
+        <Suspense fallback={<div className="text-center py-20 text-gray-500">Loading Tools...</div>}>
+           <ToolboxContent />
         </Suspense>
       </div>
     </div>
