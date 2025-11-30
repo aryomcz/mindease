@@ -12,8 +12,26 @@ export default function HotlinePage() {
   };
 
   const emergencyContacts = [
-    { name: "Pencegahan Bunuh Diri", number: "119", ext: "Ext. 8", icon: <Siren size={28} />, color: "bg-rose-500", text: "text-rose-100", glow: "shadow-rose-500/40" },
-    { name: "Darurat Medis / Polisi", number: "112", ext: "", icon: <ShieldCheck size={28} />, color: "bg-red-600", text: "text-red-100", glow: "shadow-red-600/40" },
+    { 
+      name: "Pencegahan Bunuh Diri", 
+      number: "119", 
+      ext: "Ext. 8", 
+      icon: <Siren size={28} />, 
+      color: "bg-rose-500", 
+      // Tambahan: Warna teks khusus untuk tombol agar serasi
+      btnText: "text-rose-600", 
+      glow: "shadow-rose-500/40" 
+    },
+    { 
+      name: "Darurat Medis / Polisi", 
+      number: "112", 
+      ext: "", 
+      icon: <ShieldCheck size={28} />, 
+      color: "bg-red-600", 
+      // Tambahan: Warna teks khusus untuk tombol agar serasi
+      btnText: "text-red-700", 
+      glow: "shadow-red-600/40" 
+    },
   ];
 
   const professionalServices = [
@@ -25,7 +43,7 @@ export default function HotlinePage() {
   return (
     <div className="w-full relative overflow-hidden min-h-screen text-gray-800">
       
-      {/* Background Decor (Blobs) */}
+      {/* Background Decor */}
       <div className="fixed top-0 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-rose-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob pointer-events-none"></div>
       <div className="fixed bottom-0 left-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000 pointer-events-none"></div>
 
@@ -69,9 +87,13 @@ export default function HotlinePage() {
                     <p className="text-white/80 text-xs md:text-sm mb-4 md:mb-0">Layanan 24 Jam Bebas Pulsa</p>
                 </div>
                 
+                {/* PERBAIKAN: Menambahkan class warna teks spesifik (btnText) */}
                 <a 
                     href={`tel:${contact.number}`} 
-                    className="w-full sm:w-auto px-6 py-3 bg-white text-gray-900 rounded-xl font-bold text-center shadow-lg hover:bg-gray-50 transition flex items-center justify-center gap-2 text-sm md:text-base"
+                    className={`
+                      w-full sm:w-auto px-6 py-3 bg-white rounded-xl font-bold text-center shadow-lg hover:bg-gray-50 transition flex items-center justify-center gap-2 text-sm md:text-base
+                      ${contact.btnText || "text-gray-900"} 
+                    `}
                 >
                     <Phone size={18} className="fill-current"/> 
                     Call {contact.number}
@@ -84,7 +106,6 @@ export default function HotlinePage() {
         {/* SECTION 2: OTHER SERVICES */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
           
-          {/* Professional Services List */}
           <div className="lg:col-span-2 space-y-6">
             <h2 className="text-2xl font-black text-gray-800 flex items-center gap-3">
               <span className="w-2 h-8 bg-indigo-500 rounded-full"></span>
@@ -93,29 +114,24 @@ export default function HotlinePage() {
             
             <div className="grid grid-cols-1 gap-4">
               {professionalServices.map((srv, idx) => (
-                // Layout Responsif: Stack di Mobile, Row di Desktop
                 <div key={idx} className="bg-white/40 backdrop-blur-xl p-5 rounded-[1.5rem] border border-white/50 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row items-start sm:items-center gap-4 group">
                    
-                   {/* Icon Wrapper */}
                    <div className="flex items-center gap-4 w-full sm:w-auto">
                      <div className="w-12 h-12 md:w-14 md:h-14 bg-white text-indigo-600 rounded-2xl flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
                        {srv.icon}
                      </div>
                      
-                     {/* Mobile Only: Teks di sebelah ikon */}
                      <div className="flex-1 sm:hidden">
                         <h3 className="font-bold text-gray-800 text-base">{srv.name}</h3>
                         <p className="text-xs text-gray-500">{srv.desc}</p>
                      </div>
                    </div>
 
-                   {/* Desktop Only: Teks di tengah */}
                    <div className="flex-1 hidden sm:block">
                       <h3 className="font-bold text-gray-800 text-lg">{srv.name}</h3>
                       <p className="text-sm text-gray-500">{srv.desc}</p>
                    </div>
                    
-                   {/* Buttons */}
                    <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
                        <button 
                          onClick={() => handleCopy(srv.number)}
@@ -138,7 +154,6 @@ export default function HotlinePage() {
             </div>
           </div>
 
-          {/* Sticky Tips Card */}
           <div className="relative">
              <div className="bg-teal-700 text-white p-6 md:p-8 rounded-[2rem] shadow-2xl lg:sticky lg:top-32 overflow-hidden z-10">
                 <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-teal-500 rounded-full blur-2xl opacity-50 pointer-events-none"></div>
