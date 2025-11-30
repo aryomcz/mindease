@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { Instagram, Twitter, Github } from "lucide-react"; // Hapus Smile
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 export default function Footer() {
   const pathname = usePathname(); 
@@ -25,7 +26,7 @@ export default function Footer() {
             <Link href="/" className="flex items-center gap-3 group mb-2">
               {/* Logo Image */}
               <div className="w-10 h-10 group-hover:rotate-12 transition-transform duration-300">
-                 <img src="/logo.png" alt="Lumind Logo" className="w-full h-full object-contain" />
+                 <Image width={10} height={10} src="/logo.png" alt="Lumind Logo" className="w-full h-full object-contain" />
               </div>
               
 <span className="text-xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-indigo-500">                LuMind
@@ -47,9 +48,9 @@ export default function Footer() {
 
           {/* 3. SOCIALS (Kanan) */}
           <div className="flex gap-3">
-            <SocialIcon icon={<Instagram size={18} />} href="#" color="hover:text-pink-600 hover:bg-pink-50" />
-            <SocialIcon icon={<Twitter size={18} />} href="#" color="hover:text-sky-500 hover:bg-sky-50" />
-            <SocialIcon icon={<Github size={18} />} href="#" color="hover:text-gray-900 hover:bg-gray-100" />
+            <SocialIcon icon={<Instagram size={18} />} href="#" color="hover:text-pink-600 hover:bg-pink-50 drk" />
+            <SocialIcon icon={<Twitter size={18} />} href="#" color="hover:text-sky-500 hover:bg-sky-50 drk" />
+            <SocialIcon icon={<Github size={18} />} href="#" color="hover:text-gray-900 hover:bg-gray-100 drk" />
           </div>
 
         </div>

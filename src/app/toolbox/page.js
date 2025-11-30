@@ -28,40 +28,40 @@ function ToolModal({ tool, onClose }) {
 
   return createPortal(
     <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4">
-      
+
       {/* Overlay Gelap */}
-      <div 
-        className="absolute inset-0 bg-black/80 backdrop-blur-md animate-fade-in" 
-        onClick={onClose} 
+      <div
+        className="absolute inset-0 bg-black/80 backdrop-blur-md animate-fade-in"
+        onClick={onClose}
       ></div>
 
       {/* Konten Modal */}
       <div className="bg-white w-full max-w-3xl max-h-[85vh] overflow-y-auto rounded-[2rem] p-6 md:p-8 relative shadow-2xl animate-scale-up z-10 custom-scrollbar border-4 border-white">
-        
+
         {/* Header Modal */}
         <div className="flex justify-between items-center mb-6 border-b border-gray-100 pb-4 sticky top-0 bg-white z-20">
-           <div className="flex items-center gap-4">
-              <div className={`p-3 rounded-2xl text-white shadow-lg bg-gradient-to-br ${tool.color}`}>
-                 {tool.icon}
-              </div>
-              <div>
-                 {/* Paksa Teks Hitam di dalam Modal (karena bg-nya putih) */}
-                 <h2 className="text-xl md:text-2xl font-black !text-gray-900 leading-none">{tool.label}</h2>
-                 <p className="text-xs md:text-sm !text-gray-500 mt-1">{tool.desc}</p>
-              </div>
-           </div>
-           
-           <button 
-             onClick={onClose} 
-             className="p-2 md:p-3 bg-gray-100 hover:bg-rose-100 !text-gray-500 hover:!text-rose-500 rounded-full transition-colors cursor-pointer"
-           >
-              <X size={20} />
-           </button>
+          <div className="flex items-center gap-4">
+            <div className={`p-3 rounded-2xl text-white shadow-lg bg-gradient-to-br ${tool.color}`}>
+              {tool.icon}
+            </div>
+            <div>
+              {/* Paksa Teks Hitam di dalam Modal (karena bg-nya putih) */}
+              <h2 className="text-xl md:text-2xl font-black !text-gray-900 leading-none">{tool.label}</h2>
+              <p className="text-xs md:text-sm !text-gray-500 mt-1">{tool.desc}</p>
+            </div>
+          </div>
+
+          <button
+            onClick={onClose}
+            className="p-2 md:p-3 bg-gray-100 hover:bg-rose-100 !text-gray-500 hover:!text-rose-500 rounded-full transition-colors cursor-pointer"
+          >
+            <X size={20} />
+          </button>
         </div>
 
         {/* Isi Fitur - Paksa Teks Hitam */}
         <div className="!text-gray-800 modal-content-reset">
-           {tool.component}
+          {tool.component}
         </div>
 
       </div>
@@ -79,10 +79,10 @@ function ToolboxContent() {
   useEffect(() => {
     const toolId = searchParams.get("tool");
     if (toolId) {
-       const tool = tools.find(t => t.id === toolId);
-       if (tool && !tool.isLink) {
-          setSelectedTool(tool);
-       }
+      const tool = tools.find(t => t.id === toolId);
+      if (tool && !tool.isLink) {
+        setSelectedTool(tool);
+      }
     }
   }, [searchParams]);
 
@@ -92,79 +92,85 @@ function ToolboxContent() {
   };
 
   const tools = [
-    { 
-      id: "grounding", 
-      label: "Grounding", 
-      icon: <Anchor size={40}/>, 
+    {
+      id: "grounding",
+      label: "Grounding",
+      icon: <Anchor size={40} />,
       color: "from-purple-500 to-indigo-600",
       bgCard: "bg-indigo-50",
+      hover: "purple",
       desc: "Teknik 5-4-3-2-1 untuk meredakan serangan panik.",
       component: <GroundingExercise />,
       isLink: false
     },
-    { 
-      id: "sleep", 
-      label: "Sleep Calc", 
-      icon: <Moon size={40}/>, 
+    {
+      id: "sleep",
+      label: "Sleep Calc",
+      icon: <Moon size={40} />,
       color: "from-blue-500 to-cyan-600",
       bgCard: "bg-blue-50",
+      hover: "blue",
       desc: "Hitung siklus tidur agar bangun segar tanpa pening.",
       component: <SleepCalculator />,
       isLink: false
     },
-    { 
-      id: "letter", 
-      label: "Time Capsule", 
-      icon: <Mail size={40}/>, 
+    {
+      id: "letter",
+      label: "Time Capsule",
+      icon: <Mail size={40} />,
       color: "from-rose-400 to-pink-500",
       bgCard: "bg-rose-50",
+      hover: "rose",
       desc: "Kirim pesan harapan untuk dirimu di masa depan.",
       component: <FutureLetter />,
       isLink: false
     },
-    { 
-      id: "void", 
-      label: "The Void", 
-      icon: <Trash2 size={40}/>, 
+    {
+      id: "void",
+      label: "The Void",
+      icon: <Trash2 size={40} />,
       color: "from-slate-700 to-black",
       bgCard: "bg-slate-200",
+      hover: "slate",
       desc: "Ruang hampa untuk membuang pikiran negatif.",
       isLink: true,
       href: "/void"
     },
-    { 
-        id: "breathe", 
-        label: "Breathing", 
-        icon: <Wind size={40}/>, 
-        color: "from-teal-400 to-emerald-500",
-        bgCard: "bg-teal-50",
-        desc: "Latihan napas terpandu untuk relaksasi instan.",
-        isLink: true,
-        href: "/breathing"
+    {
+      id: "breathe",
+      label: "Breathing",
+      icon: <Wind size={40} />,
+      color: "from-teal-400 to-emerald-500",
+      bgCard: "bg-teal-50",
+      hover: "teal",
+      desc: "Latihan napas terpandu untuk relaksasi instan.",
+      isLink: true,
+      href: "/breathing"
     },
   ];
 
+
   return (
     <>
-      <div className="space-y-6 md:space-y-8 pb-32 relative"> 
-         {tools.map((tool, index) => (
-            <div 
-                key={tool.id} 
-                // Sticky effect: top-20 di Mobile, top-28 di Desktop
-                className="sticky top-20 md:top-28 transition-all duration-500" 
-                style={{ zIndex: index + 1 }}
-            >
-                {tool.isLink ? (
-                    <Link href={tool.href} className="block group">
-                        <ToolCardUI tool={tool} index={index} />
-                    </Link>
-                ) : (
-                    <div onClick={() => setSelectedTool(tool)} className="cursor-pointer group">
-                        <ToolCardUI tool={tool} index={index} />
-                    </div>
-                )}
-            </div>
-         ))}
+      <div className="space-y-6 md:space-y-8 pb-32 relative">
+        {tools.map((tool, index) => (
+          <div
+            key={tool.id}
+            // Sticky effect: top-20 di Mobile, top-28 di Desktop
+            className="sticky top-20 md:top-28 transition-all duration-500"
+            style={{ zIndex: index + 1 }}
+          >
+            {tool.isLink ? (
+              <Link href={tool.href} className="block group">
+                <ToolCardUI tool={tool} index={index} />
+              </Link>
+            ) : (
+              <div onClick={() => setSelectedTool(tool)} className="cursor-pointer group">
+                <ToolCardUI tool={tool} index={index} />
+              </div>
+            )}
+          </div>
+        ))}
       </div>
 
       <ToolModal tool={selectedTool} onClose={handleClose} />
@@ -174,67 +180,75 @@ function ToolboxContent() {
 
 // --- KOMPONEN KARTU (ADAPTIF & RESPONSIF) ---
 function ToolCardUI({ tool, index }) {
-    return (
-        <div className={`
+  const colorMap = {
+    blue: "group-hover:text-blue-600!",
+    rose: "group-hover:text-rose-600!",
+    teal: "group-hover:text-teal-600!",
+    purple: "group-hover:text-purple-600!",
+    slate: "group-hover:text-slate-600!",
+    indigo: "group-hover:text-indigo-600!",
+  };
+  return (
+    <div className={`
             glass-panel relative overflow-hidden 
-            rounded-[2rem] md:rounded-[3rem] 
+            rounded-4xl md:rounded-[3rem] 
             p-6 md:p-12 
             shadow-xl transition-all duration-500 group-hover:-translate-y-2 border-2 md:border-4 border-white/50
             bg-white/80 backdrop-blur-md 
         `}>
-            {/* Gradient Blob Decoration */}
-            <div className={`absolute -right-10 -top-10 w-40 h-40 md:w-80 md:h-80 rounded-full bg-gradient-to-br ${tool.color} opacity-20 blur-2xl md:blur-3xl group-hover:scale-125 transition-transform duration-700`}></div>
+      {/* Gradient Blob Decoration */}
+      <div className={`absolute -right-10 -top-10 w-40 h-40 md:w-80 md:h-80 rounded-full bg-gradient-to-br ${tool.color} opacity-20 blur-2xl md:blur-3xl group-hover:scale-125 transition-transform duration-700`}></div>
 
-            <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6">
-                <div className="flex items-center gap-4 md:gap-6 w-full">
-                    
-                    
-                    <div>
-                        {/* Judul & Deskripsi - Tanpa tanda seru agar adaptif */}
-                        <h3 className="text-2xl md:text-5xl font-black text-gray-900 mb-1 md:mb-2 group-hover:text-teal-600 transition-colors">
-                            {tool.label}
-                        </h3>
-                        <p className="text-gray-600 text-sm md:text-lg max-w-lg leading-relaxed font-medium">
-                            {tool.desc}
-                        </p>
-                    </div>
-                </div>
+      <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6">
+        <div className="flex items-center gap-4 md:gap-6 w-full">
 
-                <div className="flex flex-row md:flex-col items-center md:items-end justify-between w-full md:w-auto gap-4 mt-2 md:mt-0">
-                    <div className={`w-14 h-14 md:w-24 md:h-24 rounded-2xl md:rounded-[2rem] flex items-center justify-center text-white shadow-xl bg-gradient-to-br ${tool.color} group-hover:rotate-6 transition-transform duration-500`}>
-                        {tool.icon}
-                    </div>
-                    {/* Tombol Buka Fitur */}
-                    <div className="glass-card px-4 py-2 md:px-6 md:py-2 rounded-full text-xs md:text-sm font-bold text-gray-800 shadow-sm group-hover:bg-teal-600 group-hover:text-white transition-colors flex items-center gap-2 border border-gray-100/50">
-                        Buka <span className="hidden md:inline">Fitur</span> <ArrowRight size={14}/>
-                    </div>
-                </div>
-            </div>
+
+          <div>
+            {/* Judul & Deskripsi - Tanpa tanda seru agar adaptif */}
+            <h3 className={`text-2xl md:text-5xl font-black text-gray-900 mb-1 md:mb-2 ${colorMap[tool.hover]} `}>
+              {tool.label}
+            </h3>
+            <p className="text-gray-600 text-sm md:text-lg max-w-lg leading-relaxed font-medium">
+              {tool.desc}
+            </p>
+          </div>
         </div>
-    );
+
+        <div className="flex flex-row md:flex-col items-center md:items-end justify-between w-full md:w-auto gap-4 mt-2 md:mt-0">
+          <div className={`w-14 h-14 md:w-24 md:h-24 rounded-2xl md:rounded-[2rem] flex items-center justify-center text-white shadow-xl bg-gradient-to-br ${tool.color} group-hover:rotate-6 transition-transform duration-500`}>
+            {tool.icon}
+          </div>
+          {/* Tombol Buka Fitur */}
+          <div className={`glass-card px-4 py-2 md:px-6 md:py-2 rounded-full text-xs md:text-sm font-bold text-gray-800 shadow-sm group-hover:bg-teal-600 ${colorMap[tool.hover]} transition-colors flex items-center gap-2 border border-gray-100/50`}>
+            Buka <span className="hidden md:inline">Fitur</span> <ArrowRight size={14} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default function ToolboxPage() {
   return (
     <div className="w-full relative overflow-x-hidden min-h-screen">
-      
+
       {/* Background Transparan */}
       <div className="fixed top-0 left-0 w-full h-full -z-10 bg-transparent"></div>
 
       <div className="max-w-5xl mx-auto px-4 md:px-6 pt-24 md:pt-36 relative z-10 flex flex-col">
-        
+
         {/* HEADER */}
         <div className="mb-8 md:mb-10 animate-fade-in-down">
-           <h1 className="text-5xl md:text-8xl font-black text-gray-900 tracking-tighter mb-2 md:mb-4">
-             Toolbox<span className="text-teal-500">.</span>
-           </h1>
-           <p className="text-base md:text-xl text-gray-600 max-w-lg leading-relaxed font-medium">
-             Kumpulan alat bantu digital untuk menenangkan pikiran, mengatur tidur, dan melepaskan emosi.
-           </p>
+          <h1 className="text-5xl md:text-8xl font-black text-gray-900 tracking-tighter mb-2 md:mb-4">
+            Toolbox<span className="text-teal-500">.</span>
+          </h1>
+          <p className="text-base md:text-xl text-gray-600 max-w-lg leading-relaxed font-medium">
+            Kumpulan alat bantu digital untuk menenangkan pikiran, mengatur tidur, dan melepaskan emosi.
+          </p>
         </div>
 
         <Suspense fallback={<div className="text-center py-20 text-gray-500">Loading Tools...</div>}>
-           <ToolboxContent />
+          <ToolboxContent />
         </Suspense>
       </div>
     </div>

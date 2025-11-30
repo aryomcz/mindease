@@ -3,6 +3,7 @@ import articles from "@/data/articles";
 import Link from "next/link";
 import React from "react"
 import { ArrowLeft, Clock, Calendar, Share2, Bookmark } from "lucide-react";
+import Image from "next/image";
 
 export default function ArticleDetail({ params }) {
     // Unwrapping params (Next.js 15+)
@@ -80,7 +81,7 @@ export default function ArticleDetail({ params }) {
                         {/* Thumbnail Image */}
                         <div className="w-full h-64 md:h-96 bg-gray-200 rounded-[2rem] overflow-hidden shadow-inner relative">
                             {article.thumbnail ? (
-                                <img src={article.thumbnail} className="w-full h-full object-cover" alt={`Cover image for article: "${article.title}" - Mental health wellness content`} />
+                                <Image fill src={article.thumbnail} className="w-full h-full object-cover" alt={`Cover image for article: "${article.title}" - Mental health wellness content`} />
                             ) : (
                                 <div className="w-full h-full bg-gradient-to-tr from-teal-100 to-indigo-100"></div>
                             )}

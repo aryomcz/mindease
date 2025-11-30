@@ -10,6 +10,10 @@ export default function SoundPlayer() {
   
   const { setAmbience } = useAmbience(); // Pakai Context
   const audioRef = useRef(null);
+  const [mounted, setMounted] = useState(false);
+useEffect(() => setMounted(true), []);
+
+
 
   const sounds = [
     { 
@@ -74,6 +78,7 @@ export default function SoundPlayer() {
       audioRef.current.volume = volume;
     }
   }, [volume]);
+  if (!mounted) return null;
 
   return (
     <div className={`

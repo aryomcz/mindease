@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Smile } from "lucide-react";
+import Image from "next/image";
 
 export default function LoadingScreen() {
   const [loading, setLoading] = useState(true);
@@ -35,8 +36,14 @@ export default function LoadingScreen() {
         <div className="absolute inset-0 bg-indigo-200 rounded-full blur-xl opacity-50 animate-pulse animation-delay-2000"></div>
         
         {/* Logo Utama */}
-        <div className="relative bg-white p-6 rounded-3xl shadow-2xl animate-bounce-slow">
-          <Smile size={64} className="text-teal-500" strokeWidth={2.5} />
+        <div className="relative bg-white/70 backdrop-blur-md p-6 rounded-3xl shadow-2xl animate-bounce">
+           <Image
+            width={72}
+            height={72} 
+            src="/logo.png" 
+            alt="Lumind Logo" 
+            className="w-full h-full object-contain drop-shadow-sm"
+            />
         </div>
       </div>
 

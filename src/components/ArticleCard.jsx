@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function ArticleCard({ article }) {
@@ -8,9 +9,10 @@ export default function ArticleCard({ article }) {
     >
       <div className="h-40 bg-gray-200">
         {article.thumbnail ? (
-          <img
+          <Image
             src={article.thumbnail}
             alt={article.title}
+            fill
             className="w-full h-full object-cover"
           />
         ) : (

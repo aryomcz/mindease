@@ -248,6 +248,10 @@ body {
   color: #1f2937 !important;
 }
 
+.dark-ambience .glass-panel .text-gray-800 {
+  color: white;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

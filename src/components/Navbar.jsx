@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Smile, HeartHandshake } from "lucide-react";
 import StreakCounter from "@/components/StreakCounter";
 import { useAmbience } from "@/context/AmbienceContext"; 
+import Image from "next/image";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -49,7 +50,9 @@ export default function Navbar() {
         >
           {/* Logo Image */}
           <div className="relative w-10 h-10 group-hover:scale-110 transition-transform duration-300">
-             <img 
+             <Image
+             width={40}
+             height={40} 
                src="/logo.png" 
                alt="Lumind Logo" 
                className="w-full h-full object-contain drop-shadow-sm"
