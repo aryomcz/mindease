@@ -4,11 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Smile, HeartHandshake } from "lucide-react";
 import StreakCounter from "@/components/StreakCounter";
-import { useAmbience } from "@/context/AmbienceContext"; // 1. Import Context
+import { useAmbience } from "@/context/AmbienceContext"; 
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { ambience } = useAmbience(); // 2. Ambil status Ambience
+  const { ambience } = useAmbience(); 
   const [scrolled, setScrolled] = useState(false);
 
   // Cek apakah sedang mode gelap (Rain/Forest)
@@ -44,15 +44,19 @@ export default function Navbar() {
         {/* KIRI: LOGO */}
         <Link 
           href="/" 
-          className="flex items-center gap-2 group"
+          className="flex items-center gap-3 group"
           aria-label="Lumind Homepage"
         >
-          <div className="bg-gradient-to-tr from-teal-400 to-indigo-500 p-2 rounded-xl text-white group-hover:rotate-12 transition-transform shadow-lg shadow-teal-200">
-            <Smile size={24} strokeWidth={2.5} />
+          {/* Logo Image */}
+          <div className="relative w-10 h-10 group-hover:scale-110 transition-transform duration-300">
+             <img 
+               src="/logo.png" 
+               alt="Lumind Logo" 
+               className="w-full h-full object-contain drop-shadow-sm"
+             />
           </div>
           
-          <span className={`text-xl md:text-2xl font-black tracking-tight block ${isDarkMode ? 'text-white' : 'bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-indigo-600'}`}>
-            Lumind
+<span className="text-xl md:text-2xl font-black tracking-tight block bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-indigo-500 drop-shadow-sm">            Lumind
           </span>
         </Link>
 
