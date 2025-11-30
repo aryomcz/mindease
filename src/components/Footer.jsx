@@ -46,9 +46,9 @@ export default function Footer() {
 
           {/* 3. SOCIALS (Kanan) */}
           <div className="flex gap-3">
-            <SocialIcon icon={<Instagram size={18} />} href="#" color="hover:text-pink-600 hover:bg-pink-50" />
-            <SocialIcon icon={<Twitter size={18} />} href="#" color="hover:text-sky-500 hover:bg-sky-50" />
-            <SocialIcon icon={<Github size={18} />} href="#" color="hover:text-gray-900 hover:bg-gray-100" />
+            <SocialIcon icon={<Instagram size={18} />} href="#" color="hover:text-pink-600 hover:bg-pink-50 drk" />
+            <SocialIcon icon={<Twitter size={18} />} href="#" color="hover:text-sky-500 hover:bg-sky-50 drk" />
+            <SocialIcon icon={<Github size={18} />} href="#" color="hover:text-gray-900 hover:bg-gray-100 drk" />
           </div>
 
         </div>

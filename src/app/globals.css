@@ -222,6 +222,7 @@ body {
 .dark-ambience .bg-white\/60,
 .dark-ambience .bg-white\/50,
 .dark-ambience .bg-white\/40,
+.dark-ambience .bg-gray-100,
 .dark-ambience .glass-panel,
 .dark-ambience .glass-card {
   background-color: rgba(0, 0, 0, 0.4) !important;
@@ -240,4 +241,8 @@ body {
 .dark-ambience nav {
   background-color: rgba(0, 0, 0, 0.2) !important;
   border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-ambience .drk {
+  color: #1f2937 !important;
 }
