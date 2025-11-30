@@ -185,7 +185,7 @@ export default function ToolsCarousel() {
                         </span>
                       )}
                     </div>
-                    <p className={`${card.textColor === "text-white" ? "text-slate-400" : "text-[#4A6B52]"} text-xs leading-relaxed opacity-80`}>
+                    <p className={`${card.textColor} text-xs leading-relaxed opacity-80`}>
                       {card.desc}
                     </p>
                   </div>
