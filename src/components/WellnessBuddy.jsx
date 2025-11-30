@@ -64,7 +64,7 @@ export default function WellnessBuddy() {
         </div>
         
         {/* Chat Bubble Maskot */}
-        <div className="absolute top-0 right-0 bg-white border border-gray-100 px-3 py-1 rounded-t-xl rounded-br-xl text-xs font-bold text-gray-600 shadow-sm animate-fade-in-up">
+        <div className="absolute top-0 right-0 bg-white border border-gray-100 px-3 py-1 rounded-t-xl rounded-br-xl text-xs font-bold text-gray-600 shadow-sm animate-fade-in-up drk">
            {mascot.msg}
         </div>
       </div>
@@ -87,7 +87,7 @@ export default function WellnessBuddy() {
           <button
             key={task.id}
             onClick={() => toggleTask(task.id)}
-            className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all duration-300 text-left group cursor-pointer 
+            className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all duration-300 text-left group cursor-pointer drk
               ${task.done 
                 ? "bg-teal-50 border-teal-200 text-gray-400 line-through" 
                 : "bg-white border-gray-100 hover:border-teal-300 text-gray-700"

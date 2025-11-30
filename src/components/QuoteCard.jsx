@@ -32,7 +32,7 @@ export default function QuoteCard() {
 
   return (
     <div className="bg-white p-8 rounded-xl shadow-sm border border-teal-100 text-center hover:shadow-md transition-shadow">
-      <p className="text-xl font-medium text-gray-700 italic">
+      <p className="drk text-xl font-medium text-gray-700 italic">
         "{quote}"
       </p>
     </div>
