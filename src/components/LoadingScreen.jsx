@@ -4,21 +4,30 @@ import { Smile } from "lucide-react";
 
 export default function LoadingScreen() {
   const [loading, setLoading] = useState(true);
+  const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    // Hilangkan loading screen setelah 2 detik
     const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000); // 2000ms = 2 detik
+      setFadeOut(true);  // Start fade out
+      
+      const hideTimer = setTimeout(() => {
+        setLoading(false);  // Completely hide
+      }, 300);  // Fade out duration
+      
+      return () => clearTimeout(hideTimer);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50 via-teal-50 to-white transition-opacity duration-700 ease-out ${
-        loading ? "opacity-100" : "opacity-0 hidden pointer-events-none"
-      }`}
+      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center 
+        bg-gradient-to-br from-indigo-50 via-teal-50 to-white transition-all duration-500 
+        ease-out pointer-events-none
+        ${fadeOut ? "opacity-0" : "opacity-100"}
+        ${!loading ? "hidden" : ""}
+      `}
     >
       <div className="relative">
         {/* Lingkaran Berdenyut */}

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Bird, CheckCircle2, Circle, PartyPopper, Trophy } from "lucide-react";
+import { MotionWrapper, StaggerContainer } from "./MotionWrapper";
 
 export default function WellnessBuddy() {
   const [tasks, setTasks] = useState([
@@ -57,16 +58,22 @@ export default function WellnessBuddy() {
       
       {/* HEADER: MASKOT */}
       <div className="text-center mb-6 relative">
+        <MotionWrapper animation="scaleIn" duration={0.8}>
         <div className={`w-32 h-32 mx-auto rounded-full flex items-center justify-center ${mascot.bg} ${mascot.color} shadow-inner transition-all duration-500`}>
            <div className={mascot.anim}>
              {mascot.icon}
            </div>
         </div>
+        </MotionWrapper>
         
         {/* Chat Bubble Maskot */}
         {/* PERBAIKAN 2: Paksa text jadi abu-abu (!text-gray-600) dan bg putih (!bg-white) */}
-        <div className="absolute top-0 right-0 !bg-white border !border-gray-200 px-3 py-1 rounded-t-xl rounded-br-xl text-xs font-bold !text-gray-600 shadow-sm animate-fade-in-up">
-           {mascot.msg}
+        <div className="absolute top-0 right-0">
+         <MotionWrapper animation="slideInRight" duration={0.8}>
+          <div className="!bg-white border !border-gray-200 px-3 py-1 rounded-t-xl rounded-br-xl text-xs font-bold !text-gray-600 shadow-sm animate-fade-in-up">
+            {mascot.msg}
+          </div>
+         </MotionWrapper>
         </div>
       </div>
 
@@ -85,6 +92,7 @@ export default function WellnessBuddy() {
 
       {/* CHECKLIST ITEMS */}
       <div className="space-y-3">
+        <StaggerContainer>
         {tasks.map((task) => (
           <button
             key={task.id}
@@ -105,6 +113,7 @@ export default function WellnessBuddy() {
             {task.done && <PartyPopper size={16} className="ml-auto text-orange-400 animate-bounce" />}
           </button>
         ))}
+        </StaggerContainer>
       </div>
 
     </div>

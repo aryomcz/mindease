@@ -31,10 +31,12 @@ export default function SleepCalculator() {
   return (
     <div className="w-full">
       <div className="flex flex-col items-center gap-4 mb-8">
-        <label className="text-gray-600 font-bold text-lg">Saya ingin bangun jam:</label>
-        
-        {/* INPUT JAM YANG LEBIH TEGAS */}
-        <input
+        <label htmlFor="wake-time-input" className="text-gray-600 font-bold text-lg">
+          Saya ingin bangun jam:
+        </label>
+
+        <input 
+          id="wake-time-input"
           type="time"
           value={wakeTime}
           onChange={(e) => setWakeTime(e.target.value)}

@@ -5,48 +5,50 @@ import MobileDock from "@/components/MobileDock";
 import SoundPlayer from "@/components/SoundPlayer";
 import LoadingScreen from "@/components/LoadingScreen";
 import WelcomeModal from "@/components/WelcomeModal";
+import OnboardingTutorial from "@/components/OnboardingTutorial";
 import { UserProvider } from "@/context/UserContext";
 import OfflineIndicator from "@/components/OfflineIndicator";
-import AmbienceBackground from "@/components/AmbienceBackground"; 
-import { AmbienceProvider } from "@/context/AmbienceContext"; 
+import AmbienceBackground from "@/components/AmbienceBackground";
+import { AmbienceProvider } from "@/context/AmbienceContext";
 import ThemeWrapper from "@/components/ThemeWrapper";
 
 export const metadata = {
   title: "Lumind - Your Mental Health Companion",
   description: "A safe space to track mood, breathe, and find peace.",
-  manifest: "/manifest.json", 
+  manifest: "/manifest.json",
   icons: {
     icon: '/favicon.ico',
-    apple: '/icon-192.png', 
+    apple: '/icon-192.png',
   },
-  themeColor: "#f0fdfa", 
+  themeColor: "#f0fdfa",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="id" dir="ltr">
       <body>
         <AmbienceProvider>
           <UserProvider>
-            
+
             <div className="min-h-screen w-full relative overflow-hidden flex flex-col">
               <LoadingScreen />
-              <AmbienceBackground /> 
+              <AmbienceBackground />
               <WelcomeModal />
-              
+
               {/* 2. BUNGKUS KONTEN DENGAN THEME WRAPPER */}
               <ThemeWrapper>
-                 <Navbar />
-                 <main className="flex-1 relative z-10">
-                   {children}
-                 </main>
-                 <Footer />
+                <Navbar />
+                <main id="main-content" className="flex-1 relative z-10">
+                  {children}
+                </main>
+                <Footer />
               </ThemeWrapper>
 
               <SoundPlayer />
               <MobileDock />
               <OfflineIndicator />
-              
+              <OnboardingTutorial />
+
             </div>
 
           </UserProvider>

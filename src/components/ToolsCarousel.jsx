@@ -1,5 +1,7 @@
 "use client";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import { ArrowRight, Trash2, Moon, Anchor, Mail, ChevronLeft, ChevronRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
@@ -8,11 +10,16 @@ import { useCallback, useEffect, useState } from "react";
 export default function ToolsCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "center" },
-    // [Autoplay({ delay: 3000 })]
   );
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState([]);
+
+  // ✅ TAMBAH: Track viewport untuk trigger animasi
+  const { ref: containerRef, inView } = useInView({
+    threshold: 0.1,
+    triggerOnce: true,
+  });
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
@@ -30,8 +37,108 @@ export default function ToolsCarousel() {
     onSelect();
   }, [emblaApi, onSelect]);
 
+  // ✅ TAMBAH: Stagger animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15, // Delay antar card: 150ms
+        delayChildren: 0.2,    // Delay awal: 200ms
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.9 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  // ✅ DATA: Definisikan cards di array untuk mapping
+  const cards = [
+    {
+      id: 1,
+      title: "The\nVoid",
+      subtitle: "+ NEW",
+      desc: "Buang pikiran negatifmu ke dalam kehampaan digital. Lega seketika.",
+      href: "/void",
+      bgColor: "bg-slate-800",
+      textColor: "text-white",
+      buttonColor: "bg-white text-slate-900",
+      hoverButtonColor: "text-white",
+      hoverButtonBgColor: "bg-slate-900",
+      buttonText: "Release Now",
+      icon: Trash2,
+      iconColor: "text-slate-700",
+      shadowColor: "shadow-slate-200",
+    },
+    {
+      id: 2,
+      title: "Sleep\nCycle",
+      subtitle: "",
+      desc: "Hitung waktu tidur ideal agar bangun segar tanpa pening.",
+      href: "/toolbox?tool=sleep",
+      bgColor: "bg-indigo-600",
+      textColor: "text-white",
+      buttonColor: "bg-white text-indigo-600",
+      hoverButtonColor: "text-indigo-600",
+      hoverButtonBgColor: "bg-indigo-700",
+      buttonText: "Calculate",
+      icon: Moon,
+      iconColor: "text-indigo-500",
+      shadowColor: "shadow-indigo-200",
+    },
+    {
+      id: 3,
+      title: "Panic\nRelief",
+      subtitle: "",
+      desc: "Teknik 5-4-3-2-1 untuk meredakan serangan cemas.",
+      href: "/toolbox?tool=grounding",
+      bgColor: "bg-[#C4D9C8]",
+      textColor: "text-[#2D4F34]",
+      buttonColor: "bg-[#2D4F34] text-[#C4D9C8]",
+      hoverButtonColor: "text-[#C4D9C8]",
+      hoverButtonBgColor: "bg-[#1a3a22]",
+      buttonText: "Start Now",
+      icon: Anchor,
+      iconColor: "text-[#A5C2AA]",
+      shadowColor: "shadow-green-100",
+    },
+    {
+      id: 4,
+      title: "Time\nCapsule",
+      subtitle: "",
+      desc: "Kirim surat harapan untuk dirimu di masa depan.",
+      href: "/toolbox?tool=letter",
+      bgColor: "bg-rose-400",
+      textColor: "text-white",
+      buttonColor: "bg-white text-rose-500",
+      hoverButtonColor: "text-rose-500",
+      hoverButtonBgColor: "bg-rose-500",
+      buttonText: "Write Letter",
+      icon: Mail,
+      iconColor: "text-rose-300",
+      shadowColor: "shadow-rose-200",
+    },
+  ];
+
   return (
-    <div className="relative w-full">
+    // ✅ WRAP dengan motion.div + container variants
+    <motion.div
+      ref={containerRef}
+      className="relative w-full"
+      variants={containerVariants}
+      initial="hidden"
+      animate={inView ? "visible" : "hidden"}
+    >
       {/* BUTTON LEFT */}
       <button
         onClick={scrollPrev}
@@ -52,161 +159,72 @@ export default function ToolsCarousel() {
       <div className="overflow-hidden py-12" ref={emblaRef}>
         <div className="flex gap-6 px-2">
           
-          {/* CARD 1 */}
-          <Link href="/void" className="snap-center shrink-0 w-[280px] h-80 bg-slate-800 rounded-[2.5rem] p-7 relative overflow-hidden flex flex-col justify-between group transition-transform hover:scale-[1.02] shadow-xl shadow-slate-200">
-            <div className="relative z-10">
-              <div className="flex justify-between items-start mb-4">
-                <h3 className="text-2xl font-black text-white leading-tight">The<br />Void</h3>
-                <span className="bg-white/20 text-white text-[10px] font-bold px-2 py-1 rounded-lg backdrop-blur">+ NEW</span>
-              </div>
-              <p className="text-slate-400 text-xs leading-relaxed">Buang pikiran negatifmu ke dalam kehampaan digital. Lega seketika.</p>
-            </div>
-
-            <div className="relative z-10">
-             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-slate-900 font-bold group-hover:w-full transition-all duration-500 overflow-hidden relative">
-                {/* TEXT */}
-                <span
-                  className="
-                    absolute
-                    left-4
-                    opacity-0
-                    -translate-x-4
-                    group-hover:opacity-100
-                    group-hover:translate-x-0
-                    transition-all
-                    duration-300
-                    delay-150
-                    text-sm
-                    pointer-events-none
-                    whitespace-nowrap
-                  "
-                >
-                  Release Now
-                </span>
-                {/* ARROW */}
-                <ArrowRight
-                  size={20}
-                  className="
-                    transition-transform
-                    duration-300
-                    group-hover:translate-x-6
-                  "
-                />
-              </div>
-            </div>
-            <Trash2 className="absolute -bottom-6 -right-6 text-slate-700 opacity-50 rotate-12 group-hover:rotate-0 transition-transform duration-500" size={160} />
-          </Link>
-
-          {/* CARD 2 */}
-          <Link href="/toolbox?tool=sleep" className="snap-center shrink-0 w-[280px] h-80 bg-indigo-600 rounded-[2.5rem] p-7 relative overflow-hidden flex flex-col justify-between group transition-transform hover:scale-[1.02] shadow-xl shadow-indigo-200">
-            <div className="relative z-10">
-              <h3 className="text-2xl font-black text-white mb-2 leading-tight">Sleep<br />Cycle</h3>
-              <p className="text-indigo-200 text-xs leading-relaxed">Hitung waktu tidur ideal agar bangun segar tanpa pening.</p>
-            </div>
-            <div className="relative z-10">
-             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-indigo-600 font-bold group-hover:w-full transition-all duration-500 overflow-hidden relative">
-              <span
-                className="
-                  absolute
-                  left-4
-                  opacity-0
-                  -translate-x-3
-                  group-hover:opacity-100
-                  group-hover:translate-x-0
-                  transition-all
-                  duration-300
-                  delay-150
-                  text-sm
-                  pointer-events-none
-                  whitespace-nowrap
-                "
+          {/* ✅ MAP CARDS dengan motion.div */}
+          {cards.map((card) => {
+            const IconComponent = card.icon;
+            
+            return (
+              // ✅ TAMBAH: motion.div untuk individual card animation
+              <motion.div
+                key={card.id}
+                variants={cardVariants}
+                className="snap-center shrink-0 w-[280px]"
               >
-                Calculate
-              </span>
-
-              <ArrowRight
-                size={20}
-                className="transition-transform duration-300 group-hover:translate-x-6"
-              />
-            </div>
-
-            </div>
-            <Moon className="absolute -bottom-4 -right-4 text-indigo-500 opacity-50 rotate-12 group-hover:rotate-0 transition-transform duration-500" size={150} />
-          </Link>
-
-          {/* CARD 3 */}
-          <Link href="/toolbox?tool=grounding" className="snap-center shrink-0 w-[280px] h-80 bg-[#C4D9C8] rounded-[2.5rem] p-7 relative overflow-hidden flex flex-col justify-between group transition-transform hover:scale-[1.02] shadow-xl shadow-green-100">
-            <div className="relative z-10">
-              <h3 className="text-2xl font-black text-[#2D4F34] mb-2 leading-tight">Panic<br />Relief</h3>
-              <p className="text-[#4A6B52] text-xs leading-relaxed">Teknik 5-4-3-2-1 untuk meredakan serangan cemas.</p>
-            </div>
-            <div className="relative z-10">
-             <div className="w-12 h-12 bg-[#2D4F34] rounded-full flex items-center justify-center text-[#C4D9C8] font-bold group-hover:w-full transition-all duration-500 overflow-hidden relative">
-              <span
-                className="
-                  absolute
-                  left-4
-                  opacity-0
-                  -translate-x-3
-                  group-hover:opacity-100
-                  group-hover:translate-x-0
-                  transition-all
-                  duration-300
-                  delay-150
-                  text-sm
-                  pointer-events-none
-                  whitespace-nowrap
-                "
-              >
-                Start Now
-              </span>
-
-              <ArrowRight
-                size={20}
-                className="transition-transform duration-300 group-hover:translate-x-6"
-              />
-            </div>
-
-            </div>
-            <Anchor className="absolute -bottom-6 -right-6 text-[#A5C2AA] opacity-60 rotate-12 group-hover:rotate-0 transition-transform duration-500" size={160} />
-          </Link>
-
-          {/* CARD 4 */}
-          <Link href="/toolbox?tool=letter" className="snap-center shrink-0 w-[280px] h-80 bg-rose-400 rounded-[2.5rem] p-7 relative overflow-hidden flex flex-col justify-between group transition-transform hover:scale-[1.02] shadow-xl shadow-rose-200">
-            <div className="relative z-10">
-              <h3 className="text-2xl font-black text-white mb-2 leading-tight">Time<br />Capsule</h3>
-              <p className="text-rose-100 text-xs leading-relaxed">Kirim surat harapan untuk dirimu di masa depan.</p>
-            </div>
-            <div className="relative z-10">
-              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-rose-500 font-bold group-hover:w-full transition-all duration-500 overflow-hidden relative">
-                <span
-                  className="
-                    absolute
-                    left-4
-                    opacity-0
-                    -translate-x-3
-                    group-hover:opacity-100
-                    group-hover:translate-x-0
-                    transition-all
-                    duration-300
-                    delay-150
-                    text-sm
-                    pointer-events-none
-                    whitespace-nowrap
-                  "
+                <Link
+                  href={card.href}
+                  className={`${card.bgColor} rounded-[2.5rem] p-7 relative overflow-hidden flex flex-col justify-between group transition-transform hover:scale-[1.02] shadow-xl ${card.shadowColor} h-80 block`}
                 >
-                  Write Letter
-                </span>
+                  <div className="relative z-10">
+                    <div className="flex justify-between items-start mb-4">
+                      <h3 className={`text-2xl font-black ${card.textColor} leading-tight whitespace-pre-line`}>
+                        {card.title}
+                      </h3>
+                      {card.subtitle && (
+                        <span className="bg-white/20 text-white text-[10px] font-bold px-2 py-1 rounded-lg backdrop-blur">
+                          {card.subtitle}
+                        </span>
+                      )}
+                    </div>
+                    <p className={`${card.textColor === "text-white" ? "text-slate-400" : "text-[#4A6B52]"} text-xs leading-relaxed opacity-80`}>
+                      {card.desc}
+                    </p>
+                  </div>
 
-                <ArrowRight
-                  size={20}
-                  className="transition-transform duration-300 group-hover:translate-x-6"
-                />
-              </div>
-
-            </div>
-            <Mail className="absolute -bottom-6 -right-6 text-rose-300 opacity-60 rotate-12 group-hover:rotate-0 transition-transform duration-500" size={160} />
-          </Link>
+                  <div className="relative z-10">
+                    <div className={`w-12 h-12 ${card.buttonColor} rounded-full flex items-center justify-center font-bold group-hover:w-full transition-all duration-500 overflow-hidden relative`}>
+                      <span
+                        className="
+                          absolute
+                          left-4
+                          opacity-0
+                          -translate-x-3
+                          group-hover:opacity-100
+                          group-hover:translate-x-0
+                          transition-all
+                          duration-300
+                          delay-150
+                          text-sm
+                          pointer-events-none
+                          whitespace-nowrap
+                        "
+                      >
+                        {card.buttonText}
+                      </span>
+                      <ArrowRight
+                        size={20}
+                        className="transition-transform duration-300 group-hover:translate-x-6"
+                      />
+                    </div>
+                  </div>
+                  
+                  <IconComponent
+                    className={`absolute -bottom-6 -right-6 ${card.iconColor} opacity-50 rotate-12 group-hover:rotate-0 transition-transform duration-500`}
+                    size={160}
+                  />
+                </Link>
+              </motion.div>
+            );
+          })}
 
         </div>
       </div>
@@ -225,6 +243,6 @@ export default function ToolsCarousel() {
           />
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }

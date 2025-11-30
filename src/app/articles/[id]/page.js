@@ -37,10 +37,18 @@ export default function ArticleDetail({ params }) {
                     </Link>
 
                     <div className="flex gap-3">
-                        <button className="p-3 rounded-full bg-white/60 hover:bg-white text-gray-500 hover:text-indigo-600 transition shadow-sm border border-white/50 cursor-pointer glass-card">
+                        <button
+                            className="p-3 rounded-full bg-white/60 hover:bg-white text-gray-500 hover:text-indigo-600 transition shadow-sm border border-white/50 cursor-pointer glass-card"
+                            aria-label="Save article to bookmarks"
+                            title="Save article"
+                        >
                             <Bookmark size={20} />
                         </button>
-                        <button className="p-3 rounded-full bg-white/60 hover:bg-white text-gray-500 hover:text-indigo-600 transition shadow-sm border border-white/50 cursor-pointer glass-card">
+                        <button
+                            className="p-3 rounded-full bg-white/60 hover:bg-white text-gray-500 hover:text-indigo-600 transition shadow-sm border border-white/50 cursor-pointer glass-card"
+                            aria-label="Share article with others"
+                            title="Share article"
+                        >
                             <Share2 size={20} />
                         </button>
                     </div>
@@ -72,7 +80,7 @@ export default function ArticleDetail({ params }) {
                         {/* Thumbnail Image */}
                         <div className="w-full h-64 md:h-96 bg-gray-200 rounded-[2rem] overflow-hidden shadow-inner relative">
                             {article.thumbnail ? (
-                                <img src={article.thumbnail} className="w-full h-full object-cover" alt="Cover" />
+                                <img src={article.thumbnail} className="w-full h-full object-cover" alt={`Cover image for article: "${article.title}" - Mental health wellness content`} />
                             ) : (
                                 <div className="w-full h-full bg-gradient-to-tr from-teal-100 to-indigo-100"></div>
                             )}
