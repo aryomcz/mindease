@@ -236,8 +236,8 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {recentArticles.map((article) => (
-              <Link 
-                href={article.link || "/articles"} 
+              <Link
+                href={article.link || "/articles"}
                 key={article.id}
                 className="group flex flex-col bg-white/70 backdrop-blur-xl border border-white/60 p-6 rounded-[2rem] shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative overflow-hidden h-full"
               >
@@ -256,7 +256,7 @@ export default function Home() {
                 <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-teal-600 transition-colors line-clamp-2">
                   {article.title}
                 </h3>
-                
+
                 <p className="text-gray-500 text-sm leading-relaxed mb-6 line-clamp-3 flex-grow">
                   {article.desc}
                 </p>
