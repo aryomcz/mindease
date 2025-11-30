@@ -45,7 +45,7 @@ export default function PopItGame() {
   };
 
   return (
-    <div className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-xl p-8 rounded-3xl border border-white/60 dark:border-slate-700 shadow-2xl max-w-sm mx-auto text-center">
+    <div className="bg-white/50 backdrop-blur-xl p-8 rounded-3xl border border-white/60 shadow-2xl max-w-sm mx-auto text-center">
 
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-xl font-black text-gray-800 dark:text-white">🍬 Virtual Pop-It</h3>
